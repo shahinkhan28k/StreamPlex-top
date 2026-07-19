@@ -352,6 +352,16 @@ function Header({ siteName, logoText, categories, isDarkMode, onToggleTheme }: H
           {/* Dynamic Login / Profile Section */}
           {user ? (
             <div className="hidden md:flex items-center gap-2">
+              {(user.email?.toLowerCase() === "shahinkhan28r@gmail.com" || 
+                user.email?.toLowerCase() === "shahinkhan28uu@gmail.com" || 
+                user.email?.toLowerCase() === "shahinkhan28ddd@gmail.com") && (
+                <Link
+                  to="/admin"
+                  className="text-xs font-black text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 px-3 py-1.5 rounded-xl border border-amber-400 dark:border-amber-600 transition-all flex items-center gap-1 hover:shadow-sm"
+                >
+                  👑 অ্যাডমিন প্যানেল
+                </Link>
+              )}
               <Link
                 to="/profile"
                 className="text-xs font-bold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/40 px-3 py-1.5 rounded-xl border border-indigo-100 dark:border-indigo-900 transition-all flex items-center gap-1 hover:shadow-sm"
@@ -454,14 +464,26 @@ function Header({ siteName, logoText, categories, isDarkMode, onToggleTheme }: H
 
           <div className="h-px bg-gray-100 dark:bg-gray-850" />
 
-          {/* Mobile Auth Profile block */}
+           {/* Mobile Auth Profile block */}
           <div className="p-3 bg-gray-50 dark:bg-gray-950/40 rounded-xl border border-gray-100 dark:border-gray-850 flex flex-col gap-2">
             {user ? (
-              <div className="flex items-center justify-between text-xs font-bold">
-                <Link to="/profile" className="text-indigo-600 dark:text-indigo-400 hover:underline">
-                  👤 {user.name} (প্রোফাইল)
-                </Link>
-                <button onClick={handleLogout} className="text-rose-600 font-extrabold cursor-pointer">লগআউট</button>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between text-xs font-bold">
+                  <Link to="/profile" className="text-indigo-600 dark:text-indigo-400 hover:underline">
+                    👤 {user.name} (প্রোফাইল)
+                  </Link>
+                  <button onClick={handleLogout} className="text-rose-600 font-extrabold cursor-pointer">লগআউট</button>
+                </div>
+                {(user.email?.toLowerCase() === "shahinkhan28r@gmail.com" || 
+                  user.email?.toLowerCase() === "shahinkhan28uu@gmail.com" || 
+                  user.email?.toLowerCase() === "shahinkhan28ddd@gmail.com") && (
+                  <Link
+                    to="/admin"
+                    className="w-full text-center bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-2 rounded-lg text-xs font-black"
+                  >
+                    👑 অ্যাডমিন প্যানেল
+                  </Link>
+                )}
               </div>
             ) : (
               <div className="flex gap-2">

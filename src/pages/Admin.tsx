@@ -350,17 +350,37 @@ export default function Admin({
   // Check login token on mount
   useEffect(() => {
     const token = localStorage.getItem("streamplex_admin_token");
-    if (token) {
+    const loggedUserStr = localStorage.getItem("streamplex_logged_user");
+    let isLoggedAdmin = false;
+    if (loggedUserStr) {
+      try {
+        const loggedUser = JSON.parse(loggedUserStr);
+        if (loggedUser && (
+          loggedUser.email?.toLowerCase() === "shahinkhan28r@gmail.com" || 
+          loggedUser.email?.toLowerCase() === "shahinkhan28uu@gmail.com" || 
+          loggedUser.email?.toLowerCase() === "shahinkhan28ddd@gmail.com"
+        )) {
+          isLoggedAdmin = true;
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    if (token || isLoggedAdmin) {
       setIsAuthorized(true);
       fetchLoginHistory();
       fetchComments();
       fetchOffers();
       fetchPayments();
 
-      const role = localStorage.getItem("streamplex_admin_role") || "admin";
+      const role = isLoggedAdmin ? "admin" : (localStorage.getItem("streamplex_admin_role") || "admin");
       const savedPerms = localStorage.getItem("streamplex_admin_permissions");
       setAdminRole(role);
-      if (savedPerms) {
+      
+      if (isLoggedAdmin) {
+        setAdminPermissions(["dashboard", "videos", "categories", "comments", "payments", "ads", "users", "offers", "settings"]);
+      } else if (savedPerms) {
         try {
           const parsedPerms = JSON.parse(savedPerms);
           setAdminPermissions(parsedPerms);
