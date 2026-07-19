@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
 import { Video, PaymentRequest, User } from "../types";
 import { motion } from "motion/react";
 import {
@@ -33,6 +34,7 @@ interface ProfileProps {
 
 export default function Profile({ videos }: ProfileProps) {
   const navigate = useNavigate();
+  const { lang, t } = useLanguage();
   const [currentUser, setCurrentUser] = useState<{ email: string; name: string } | null>(null);
   const [profileData, setProfileData] = useState<User | null>(null);
   const [payments, setPayments] = useState<PaymentRequest[]>([]);
@@ -116,7 +118,7 @@ export default function Profile({ videos }: ProfileProps) {
         if (data.error) {
           setProfileError(data.error);
         } else {
-          setProfileSuccess("আপনার প্রোফাইল নাম সফলভাবে পরিবর্তন করা হয়েছে।");
+          setProfileSuccess(lang === "en" ? "Your profile name has been updated successfully." : "আপনার প্রোফাইল নাম সফলভাবে পরিবর্তন করা হয়েছে।");
           setIsEditing(false);
           // Update client-side local storage and state
           const updatedUser = { email: currentUser.email, name: editName.trim() };
@@ -132,7 +134,7 @@ export default function Profile({ videos }: ProfileProps) {
       })
       .catch((err) => {
         console.error("Profile update error:", err);
-        setProfileError("প্রোফাইল আপডেট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+        setProfileError(lang === "en" ? "Error updating profile. Please try again." : "প্রোফাইল আপডেট করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
         setUpdatingProfile(false);
       });
   };
@@ -144,24 +146,24 @@ export default function Profile({ videos }: ProfileProps) {
     setPwdError("");
 
     if (!currPassword || !newPassword || !confirmPassword) {
-      setPwdError("অনুগ্রহ করে সবকটি ইনপুট ক্ষেত্র পূরণ করুন।");
+      setPwdError(lang === "en" ? "Please fill in all input fields." : "অনুগ্রহ করে সবকটি ইনপুট ক্ষেত্র পূরণ করুন।");
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setPwdError("নতুন পাসওয়ার্ড এবং নিশ্চিতকরণ পাসওয়ার্ড মেলেনি!");
+      setPwdError(lang === "en" ? "New password and confirmation password do not match!" : "নতুন পাসওয়ার্ড এবং নিশ্চিতকরণ পাসওয়ার্ড মেলেনি!");
       return;
     }
 
     if (newPassword.length < 6) {
-      setPwdError("পাসওয়ার্ডটি অবশ্যই অন্তত ৬ অক্ষরের হতে হবে।");
+      setPwdError(lang === "en" ? "Password must be at least 6 characters long." : "পাসওয়ার্ডটি অবশ্যই অন্তত ৬ অক্ষরের হতে হবে।");
       return;
     }
 
     setPwdLoading(true);
     setTimeout(() => {
       setPwdLoading(false);
-      setPwdSuccess("আপনার পাসওয়ার্ড সফলভাবে আপডেট করা হয়েছে! পরবর্তী লগইনে এটি ব্যবহার করুন।");
+      setPwdSuccess(lang === "en" ? "Your password was successfully updated! Use it on your next login." : "আপনার পাসওয়ার্ড সফলভাবে আপডেট করা হয়েছে! পরবর্তী লগইনে এটি ব্যবহার করুন।");
       setCurrPassword("");
       setNewPassword("");
       setConfirmPassword("");
@@ -218,11 +220,11 @@ export default function Profile({ videos }: ProfileProps) {
                 
                 {isPremiumUser ? (
                   <span className="bg-amber-500/10 text-amber-400 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border border-amber-500/20 flex items-center gap-1">
-                    <Crown size={10} className="fill-current" /> Premium Member
+                    <Crown size={10} className="fill-current" /> {lang === "en" ? "Premium Member" : "প্রিমিয়াম মেম্বার"}
                   </span>
                 ) : (
                   <span className="bg-white/10 text-gray-300 text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full border border-white/5">
-                    Free Member
+                    {lang === "en" ? "Free Member" : "ফ্রি মেম্বার"}
                   </span>
                 )}
               </div>
@@ -240,14 +242,14 @@ export default function Profile({ videos }: ProfileProps) {
                 className="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950 font-black text-xs px-4 py-2.5 rounded-xl transition-all shadow-md shadow-amber-500/10 flex items-center gap-1.5"
               >
                 <Sparkles size={13} />
-                প্রিমিয়ামে আপগ্রেড করুন
+                {lang === "en" ? "Upgrade to Premium" : "প্রিমিয়ামে আপগ্রেড করুন"}
               </Link>
             )}
             <button
               onClick={handleLogout}
               className="bg-white/5 hover:bg-white/15 text-white/90 hover:text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-all border border-white/5 cursor-pointer flex items-center gap-1.5"
             >
-              লগআউট
+              {lang === "en" ? "Log Out" : "লগআউট"}
             </button>
           </div>
         </div>
@@ -257,7 +259,9 @@ export default function Profile({ videos }: ProfileProps) {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
         {/* Left Column: Vertical Tabs Menus */}
         <div className="lg:col-span-1 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800/80 p-4 rounded-3xl space-y-1 shadow-sm">
-          <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-3 mb-3">মেনু নেভিগেশন</p>
+          <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-3 mb-3">
+            {lang === "en" ? "Menu Navigation" : "মেনু নেভিগেশন"}
+          </p>
           
           <button
             onClick={() => setActiveTab("info")}
@@ -268,7 +272,7 @@ export default function Profile({ videos }: ProfileProps) {
             }`}
           >
             <UserIcon size={14} />
-            <span>প্রোফাইল তথ্য</span>
+            <span>{lang === "en" ? "Profile Info" : "প্রোফাইল তথ্য"}</span>
           </button>
 
           <button
@@ -280,7 +284,7 @@ export default function Profile({ videos }: ProfileProps) {
             }`}
           >
             <Heart size={14} />
-            <span>আমার ওয়াচলিস্ট</span>
+            <span>{lang === "en" ? "My Watchlist" : "আমার ওয়াচলিস্ট"}</span>
             {watchlistVideos.length > 0 && (
               <span className={`ml-auto text-[9px] font-black rounded-full px-2 py-0.5 ${
                 activeTab === "watchlist" ? "bg-white text-indigo-600" : "bg-indigo-50 text-indigo-600 dark:bg-indigo-950/40 dark:text-indigo-400"
@@ -299,7 +303,7 @@ export default function Profile({ videos }: ProfileProps) {
             }`}
           >
             <History size={14} />
-            <span>পেমেন্ট ও সাবস্ক্রিপশন</span>
+            <span>{lang === "en" ? "Payments & Subscriptions" : "পেমেন্ট ও সাবস্ক্রিপশন"}</span>
           </button>
 
           <button
@@ -311,7 +315,7 @@ export default function Profile({ videos }: ProfileProps) {
             }`}
           >
             <Lock size={14} />
-            <span>নিরাপত্তা সেটিংস</span>
+            <span>{lang === "en" ? "Security Settings" : "নিরাপত্তা সেটিংস"}</span>
           </button>
         </div>
 
@@ -330,13 +334,13 @@ export default function Profile({ videos }: ProfileProps) {
                 <div className="flex items-center justify-between border-b border-gray-50 dark:border-gray-800/80 pb-3">
                   <h2 className="text-sm font-black text-gray-900 dark:text-white flex items-center gap-2">
                     <UserIcon size={16} className="text-indigo-500" />
-                    মূল প্রোফাইল তথ্য
+                    {lang === "en" ? "Main Profile Info" : "মূল প্রোফাইল তথ্য"}
                   </h2>
                   <button
                     onClick={() => setIsEditing(!isEditing)}
                     className="text-indigo-600 hover:text-indigo-500 font-bold flex items-center gap-1 cursor-pointer"
                   >
-                    <Settings size={13} /> {isEditing ? "বাতিল করুন" : "নাম পরিবর্তন করুন"}
+                    <Settings size={13} /> {isEditing ? (lang === "en" ? "Cancel" : "বাতিল করুন") : (lang === "en" ? "Edit Name" : "নাম পরিবর্তন করুন")}
                   </button>
                 </div>
 
@@ -344,7 +348,7 @@ export default function Profile({ videos }: ProfileProps) {
                   <form onSubmit={handleUpdateProfile} className="space-y-4 max-w-md">
                     <div className="space-y-1.5">
                       <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest block">
-                        পুরো নাম (Full Name)
+                        {lang === "en" ? "Full Name" : "পুরো নাম (Full Name)"}
                       </label>
                       <input
                         type="text"
@@ -372,7 +376,7 @@ export default function Profile({ videos }: ProfileProps) {
                         ) : (
                           <Save size={13} />
                         )}
-                        তথ্য সংরক্ষণ করুন
+                        {lang === "en" ? "Save Changes" : "তথ্য সংরক্ষণ করুন"}
                       </button>
                       <button
                         type="button"
@@ -382,35 +386,43 @@ export default function Profile({ videos }: ProfileProps) {
                         }}
                         className="bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold px-4 py-2 rounded-xl transition-all cursor-pointer"
                       >
-                        বাতিল
+                        {lang === "en" ? "Cancel" : "বাতিল"}
                       </button>
                     </div>
                   </form>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-1">
-                      <span className="text-[10px] text-gray-400 font-black uppercase tracking-wider block">ব্যবহারকারীর নাম</span>
+                      <span className="text-[10px] text-gray-400 font-black uppercase tracking-wider block">
+                        {lang === "en" ? "Username" : "ব্যবহারকারীর নাম"}
+                      </span>
                       <p className="text-sm font-black text-gray-900 dark:text-white">{profileData?.userName || currentUser?.name}</p>
                     </div>
                     <div className="space-y-1">
-                      <span className="text-[10px] text-gray-400 font-black uppercase tracking-wider block">ইমেইল ঠিকানা</span>
+                      <span className="text-[10px] text-gray-400 font-black uppercase tracking-wider block">
+                        {lang === "en" ? "Email Address" : "ইমেইল ঠিকানা"}
+                      </span>
                       <p className="text-sm font-black text-gray-900 dark:text-white font-mono">{currentUser?.email}</p>
                     </div>
                     <div className="space-y-1">
-                      <span className="text-[10px] text-gray-400 font-black uppercase tracking-wider block">একাউন্ট স্ট্যাটাস</span>
+                      <span className="text-[10px] text-gray-400 font-black uppercase tracking-wider block">
+                        {lang === "en" ? "Account Status" : "একাউন্ট স্ট্যাটাস"}
+                      </span>
                       <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-600 dark:bg-emerald-950/20 dark:text-emerald-400 border border-emerald-500/20 mt-1">
-                        <UserCheck size={10} /> সক্রিয় (Active)
+                        <UserCheck size={10} /> {lang === "en" ? "Active" : "সক্রিয় (Active)"}
                       </span>
                     </div>
                     <div className="space-y-1">
-                      <span className="text-[10px] text-gray-400 font-black uppercase tracking-wider block">নিবন্ধনের তারিখ</span>
+                      <span className="text-[10px] text-gray-400 font-black uppercase tracking-wider block">
+                        {lang === "en" ? "Registration Date" : "নিবন্ধনের তারিখ"}
+                      </span>
                       <p className="text-xs font-bold text-gray-800 dark:text-gray-200 mt-1 flex items-center gap-1">
                         <Calendar size={13} className="text-gray-400" />
-                        {profileData?.createdAt ? new Date(profileData.createdAt).toLocaleDateString("bn-BD", {
+                        {profileData?.createdAt ? new Date(profileData.createdAt).toLocaleDateString(lang === "en" ? "en-US" : "bn-BD", {
                           year: "numeric",
                           month: "long",
                           day: "numeric"
-                        }) : "অজানা"}
+                        }) : (lang === "en" ? "Unknown" : "অজানা")}
                       </p>
                     </div>
                   </div>
@@ -427,20 +439,20 @@ export default function Profile({ videos }: ProfileProps) {
               <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800/80 rounded-3xl p-6 shadow-sm space-y-4">
                 <h3 className="text-sm font-black text-gray-900 dark:text-white flex items-center gap-1.5">
                   <Shield size={15} className="text-indigo-500" />
-                  সাম্প্রতিক লগইন সেশন লোগ
+                  {lang === "en" ? "Recent Login Session Logs" : "সাম্প্রতিক লগইন সেশন লোগ"}
                 </h3>
                 
                 <div className="space-y-2.5">
                   <div className="flex justify-between items-center p-3 bg-gray-50/50 dark:bg-gray-950/40 rounded-2xl border border-gray-100 dark:border-gray-850 text-[11px]">
                     <div className="space-y-0.5 text-left">
                       <div className="font-bold text-gray-900 dark:text-white">Active Device (Chrome, Linux)</div>
-                      <div className="text-[10px] text-gray-400 font-mono">IP: 192.168.1.1 (বর্তমান সেশন)</div>
+                      <div className="text-[10px] text-gray-400 font-mono">IP: 192.168.1.1 {lang === "en" ? "(Current Session)" : "(বর্তমান সেশন)"}</div>
                     </div>
                     <div className="text-right space-y-1">
                       <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-400 text-[9px] font-black uppercase">
                         Current
                       </span>
-                      <div className="text-[10px] text-gray-400">{new Date().toLocaleString("bn-BD", { hour: "numeric", minute: "numeric", hour12: true })}</div>
+                      <div className="text-[10px] text-gray-400">{new Date().toLocaleString(lang === "en" ? "en-US" : "bn-BD", { hour: "numeric", minute: "numeric", hour12: true })}</div>
                     </div>
                   </div>
 
@@ -453,7 +465,7 @@ export default function Profile({ videos }: ProfileProps) {
                       <span className="px-2 py-0.5 rounded bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300 text-[9px] font-bold uppercase">
                         Success
                       </span>
-                      <div className="text-[10px] text-gray-400">গতকাল, রাত ১০:২৪</div>
+                      <div className="text-[10px] text-gray-400">{lang === "en" ? "Yesterday, 10:24 PM" : "গতকাল, রাত ১০:২৪"}</div>
                     </div>
                   </div>
                 </div>
@@ -472,7 +484,7 @@ export default function Profile({ videos }: ProfileProps) {
               <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800/80 rounded-3xl p-6 shadow-sm space-y-5">
                 <h2 className="text-sm font-black text-gray-900 dark:text-white flex items-center gap-2">
                   <Heart size={16} className="text-rose-500 fill-current" />
-                  আমার সংরক্ষিত ওয়াচলিস্ট ({watchlistVideos.length})
+                  {lang === "en" ? `My Saved Watchlist (${watchlistVideos.length})` : `আমার সংরক্ষিত ওয়াচলিস্ট (${watchlistVideos.length})`}
                 </h2>
 
                 {watchlistVideos.length === 0 ? (
@@ -481,16 +493,18 @@ export default function Profile({ videos }: ProfileProps) {
                       <Heart size={26} />
                     </div>
                     <h3 className="text-sm font-extrabold text-gray-800 dark:text-gray-200">
-                      আপনার ওয়াচলিস্ট সম্পূর্ণ খালি!
+                      {lang === "en" ? "Your watchlist is empty!" : "আপনার ওয়াচলিস্ট সম্পূর্ণ খালি!"}
                     </h3>
                     <p className="text-[10px] text-gray-400 max-w-xs leading-relaxed font-semibold">
-                      লাইভ নাটক, মুভি বা বিশেষ অনুষ্ঠান দেখতে দেখতে পছন্দের ভিডিওগুলো সেভ করতে ওয়ান-ক্লিক ওয়াচলিস্ট বাটনে চাপুন।
+                      {lang === "en" 
+                        ? "Save your favorite dramas, movies, or live shows to watch later by clicking the watch later button."
+                        : "লাইভ নাটক, মুভি বা বিশেষ অনুষ্ঠান দেখতে দেখতে পছন্দের ভিডিওগুলো সেভ করতে ওয়ান-ক্লিক ওয়াচলিস্ট বাটনে চাপুন।"}
                     </p>
                     <Link
                       to="/"
                       className="bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs px-4 py-2 rounded-xl transition-all flex items-center gap-1.5 shadow-md shadow-indigo-600/10"
                     >
-                      ভিডিও দেখতে হোমে যান <ArrowRight size={13} />
+                      {lang === "en" ? "Go Home to Watch Videos" : "ভিডিও দেখতে হোমে যান"} <ArrowRight size={13} />
                     </Link>
                   </div>
                 ) : (
@@ -524,12 +538,12 @@ export default function Profile({ videos }: ProfileProps) {
 
                           <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-150 dark:border-gray-800/80">
                             <span className="text-[10px] text-gray-400 font-bold">
-                              {vid.views.toLocaleString()} ভিউস
+                              {vid.views.toLocaleString()} {lang === "en" ? "Views" : "ভিউস"}
                             </span>
                             <button
                               onClick={(e) => handleRemoveFromWatchlist(vid.id, e)}
                               className="text-rose-600 hover:text-rose-500 hover:bg-rose-500/10 p-1.5 rounded-lg transition-colors cursor-pointer"
-                              title="ওয়াচলিস্ট থেকে মুছুন"
+                              title={lang === "en" ? "Remove from Watchlist" : "ওয়াচলিস্ট থেকে মুছুন"}
                             >
                               <Trash2 size={13} />
                             </button>
@@ -555,7 +569,7 @@ export default function Profile({ videos }: ProfileProps) {
               <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800/80 rounded-3xl p-6 shadow-sm space-y-4">
                 <h2 className="text-sm font-black text-gray-900 dark:text-white flex items-center gap-2">
                   <Crown size={16} className="text-amber-500" />
-                  বর্তমান সাবস্ক্রিপশন প্ল্যান
+                  {lang === "en" ? "Current Subscription Plan" : "বর্তমান সাবস্ক্রিপশন প্ল্যান"}
                 </h2>
 
                 {isPremiumUser ? (
@@ -563,20 +577,24 @@ export default function Profile({ videos }: ProfileProps) {
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
                         <span className="bg-amber-500 text-slate-950 text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full flex items-center gap-1 w-max">
-                          👑 PREMIUM ACTIVE
+                          {lang === "en" ? "👑 PREMIUM ACTIVE" : "👑 প্রিমিয়াম সক্রিয়"}
                         </span>
-                        <h3 className="text-base font-black text-slate-900 dark:text-amber-400 pt-1">StreamPlex লাইফটাইম প্রিমিয়াম</h3>
+                        <h3 className="text-base font-black text-slate-900 dark:text-amber-400 pt-1">
+                          {lang === "en" ? "StreamPlex Lifetime Premium" : "StreamPlex লাইফটাইম প্রিমিয়াম"}
+                        </h3>
                       </div>
                       <Award size={36} className="text-amber-500 animate-pulse" />
                     </div>
                     <p className="text-[11px] text-gray-500 dark:text-gray-300 leading-relaxed font-semibold">
-                      অভিনন্দন! আপনার একাউন্টে প্রিমিয়াম সুবিধা চালু আছে। এখন আপনি বিজ্ঞাপন ছাড়াই যেকোনো নাটক, লাইভ চ্যানেল এবং এক্সক্লুসিভ শো নিরবচ্ছিন্নভাবে উপভোগ করতে পারছেন।
+                      {lang === "en" 
+                        ? "Congratulations! Premium features are active on your account. You can now enjoy ad-free dramas, live channels, and exclusive shows seamlessly."
+                        : "অভিনন্দন! আপনার একাউন্টে প্রিমিয়াম সুবিধা চালু আছে। এখন আপনি বিজ্ঞাপন ছাড়াই যেকোনো নাটক, লাইভ চ্যানেল এবং এক্সক্লুসিভ শো নিরবচ্ছিন্নভাবে উপভোগ করতে পারছেন।"}
                     </p>
                     <div className="h-px bg-amber-500/10 pt-1" />
                     <div className="flex items-center gap-4 text-[10px] text-gray-400 font-bold">
-                      <span>মেয়াদ: <span className="text-emerald-500 font-black">আজীবন (Unlimited Lifetime)</span></span>
+                      <span>{lang === "en" ? "Validity:" : "মেয়াদ:"} <span className="text-emerald-500 font-black">{lang === "en" ? "Lifetime (Unlimited)" : "আজীবন (Unlimited Lifetime)"}</span></span>
                       <span>•</span>
-                      <span>বিলিং মেথড: <span className="text-indigo-400 font-black uppercase">BKash / Nagad</span></span>
+                      <span>{lang === "en" ? "Billing Method:" : "বিলিং মেথড:"} <span className="text-indigo-400 font-black uppercase">BKash / Nagad</span></span>
                     </div>
                   </div>
                 ) : (
@@ -586,19 +604,23 @@ export default function Profile({ videos }: ProfileProps) {
                         <span className="bg-gray-200 dark:bg-gray-850 text-gray-600 dark:text-gray-400 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded">
                           FREE PLAN
                         </span>
-                        <h3 className="text-sm font-black text-gray-900 dark:text-white">সাধারণ মেম্বারশিপ</h3>
+                        <h3 className="text-sm font-black text-gray-900 dark:text-white">
+                          {lang === "en" ? "Free Membership" : "সাধারণ মেম্বারশিপ"}
+                        </h3>
                       </div>
                       <XCircle size={24} className="text-gray-400" />
                     </div>
                     <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed font-semibold">
-                      বর্তমানে আপনি সাধারণ ব্যবহারকারী হিসেবে আছেন। প্রিমিয়াম লাইভ স্ট্রিম এবং বাফারিং-ফ্রি প্রিমিয়াম নাটক/মুভি অ্যাক্সেস করতে আমাদের সাবস্ক্রিপশন প্যাকেজ কিনে আপগ্রেড করুন।
+                      {lang === "en" 
+                        ? "You are currently a free member. Upgrade by purchasing our subscription packages to access premium live streams and buffer-free premium videos/movies."
+                        : "বর্তমানে আপনি সাধারণ ব্যবহারকারী হিসেবে আছেন। প্রিমিয়াম লাইভ স্ট্রিম এবং বাফারিং-ফ্রি প্রিমিয়াম নাটক/মুভি অ্যাক্সেস করতে আমাদের সাবস্ক্রিপশন প্যাকেজ কিনে আপগ্রেড করুন।"}
                     </p>
                     <div className="pt-2 flex">
                       <Link
                         to="/offers"
                         className="bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs px-4 py-2 rounded-xl transition-all flex items-center gap-1 shadow-md shadow-indigo-600/10"
                       >
-                        সাবস্ক্রিপশন অফারগুলো দেখুন <ArrowRight size={13} />
+                        {lang === "en" ? "View Subscription Offers" : "সাবস্ক্রিপশন অফারগুলো দেখুন"} <ArrowRight size={13} />
                       </Link>
                     </div>
                   </div>
@@ -609,22 +631,24 @@ export default function Profile({ videos }: ProfileProps) {
               <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800/80 rounded-3xl p-6 shadow-sm space-y-4">
                 <h3 className="text-sm font-black text-gray-900 dark:text-white flex items-center gap-1.5">
                   <History size={15} className="text-indigo-500" />
-                  আপনার পেমেন্ট ভেরিফিকেশন হিস্টোরি
+                  {lang === "en" ? "Your Payment Verification History" : "আপনার পেমেন্ট ভেরিফিকেশন হিস্টোরি"}
                 </h3>
 
                 {payments.length === 0 ? (
-                  <p className="text-[11px] text-gray-400 py-6 text-center">আপনি কোনো পেমেন্ট অনুরোধ পাঠাননি।</p>
+                  <p className="text-[11px] text-gray-400 py-6 text-center">
+                    {lang === "en" ? "You have not submitted any payment requests." : "আপনি কোনো পেমেন্ট অনুরোধ পাঠাননি।"}
+                  </p>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse text-[11px]">
                       <thead>
                         <tr className="border-b border-gray-100 dark:border-gray-800 text-gray-400 font-bold uppercase">
-                          <th className="py-2 px-3">প্যাকেজ</th>
-                          <th className="py-2 px-3">মূল্য</th>
-                          <th className="py-2 px-3">গেটওয়ে</th>
-                          <th className="py-2 px-3">প্রেরক নম্বর</th>
-                          <th className="py-2 px-3">ট্রানজেকশন আইডি</th>
-                          <th className="py-2 px-3 text-right">স্ট্যাটাস</th>
+                          <th className="py-2 px-3">{lang === "en" ? "Package" : "প্যাকেজ"}</th>
+                          <th className="py-2 px-3">{lang === "en" ? "Price" : "মূল্য"}</th>
+                          <th className="py-2 px-3">{lang === "en" ? "Gateway" : "গেটওয়ে"}</th>
+                          <th className="py-2 px-3">{lang === "en" ? "Sender Number" : "প্রেরক নম্বর"}</th>
+                          <th className="py-2 px-3">{lang === "en" ? "Transaction ID" : "ট্রানজেকশন আইডি"}</th>
+                          <th className="py-2 px-3 text-right">{lang === "en" ? "Status" : "স্ট্যাটাস"}</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-50 dark:divide-gray-850 text-gray-700 dark:text-gray-300">
@@ -649,8 +673,8 @@ export default function Profile({ videos }: ProfileProps) {
                                 history.status === "rejected" ? "bg-rose-50 text-rose-600" :
                                 "bg-amber-50 text-amber-600"
                               }`}>
-                                {history.status === "approved" ? "সফল (Approved)" :
-                                 history.status === "rejected" ? "প্রত্যাখ্যাত" : "পেন্ডিং"}
+                                {history.status === "approved" ? (lang === "en" ? "Approved" : "সফল (Approved)") :
+                                 history.status === "rejected" ? (lang === "en" ? "Rejected" : "প্রত্যাখ্যাত") : (lang === "en" ? "Pending" : "পেন্ডিং")}
                               </span>
                             </td>
                           </tr>
@@ -674,13 +698,13 @@ export default function Profile({ videos }: ProfileProps) {
               <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800/80 rounded-3xl p-6 shadow-sm space-y-6">
                 <h2 className="text-sm font-black text-gray-900 dark:text-white flex items-center gap-2 border-b border-gray-50 dark:border-gray-800 pb-3">
                   <Key size={16} className="text-indigo-500" />
-                  পাসওয়ার্ড পরিবর্তন (Change Password)
+                  {lang === "en" ? "Change Password" : "পাসওয়ার্ড পরিবর্তন (Change Password)"}
                 </h2>
 
                 <form onSubmit={handleChangePassword} className="space-y-4 max-w-md">
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest block">
-                      বর্তমান পাসওয়ার্ড
+                      {lang === "en" ? "Current Password" : "বর্তমান পাসওয়ার্ড"}
                     </label>
                     <div className="relative">
                       <input
@@ -698,12 +722,12 @@ export default function Profile({ videos }: ProfileProps) {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest block">
-                        নতুন পাসওয়ার্ড
+                        {lang === "en" ? "New Password" : "নতুন পাসওয়ার্ড"}
                       </label>
                       <div className="relative">
                         <input
                           type="password"
-                          placeholder="কমপক্ষে ৬ অক্ষর"
+                          placeholder={lang === "en" ? "At least 6 characters" : "কমপক্ষে ৬ অক্ষর"}
                           required
                           value={newPassword}
                           onChange={(e) => setNewPassword(e.target.value)}
@@ -715,12 +739,12 @@ export default function Profile({ videos }: ProfileProps) {
 
                     <div className="space-y-1.5">
                       <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest block">
-                        নতুন পাসওয়ার্ড নিশ্চিত করুন
+                        {lang === "en" ? "Confirm New Password" : "নতুন পাসওয়ার্ড নিশ্চিত করুন"}
                       </label>
                       <div className="relative">
                         <input
                           type="password"
-                          placeholder="পুনরায় পাসওয়ার্ড লিখুন"
+                          placeholder={lang === "en" ? "Re-enter new password" : "পুনরায় পাসওয়ার্ড লিখুন"}
                           required
                           value={confirmPassword}
                           onChange={(e) => setConfirmPassword(e.target.value)}
@@ -754,7 +778,7 @@ export default function Profile({ videos }: ProfileProps) {
                       ) : (
                         <Check size={14} />
                       )}
-                      পাসওয়ার্ড পরিবর্তন করুন
+                      {lang === "en" ? "Change Password" : "পাসওয়ার্ড পরিবর্তন করুন"}
                     </button>
                   </div>
                 </form>

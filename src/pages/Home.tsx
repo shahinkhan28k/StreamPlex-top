@@ -16,6 +16,8 @@ import {
 import { motion, AnimatePresence } from "motion/react";
 import LucideIcon from "../components/LucideIcon";
 import AdSpace from "../components/AdSpace";
+import { useLanguage } from "../context/LanguageContext";
+import { translations } from "../lib/translations";
 
 interface HomeProps {
   videos: Video[];
@@ -25,6 +27,7 @@ interface HomeProps {
 }
 
 export default function Home({ videos, categories, ads, settings }: HomeProps) {
+  const { lang, t } = useLanguage();
   const liveServers = settings?.liveStreamServers || [];
 
   // Programmatically expand the videos list to allow unlimited/many pages of unique content
@@ -34,8 +37,8 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
     if (!videos || videos.length === 0) return;
     
     const list: Video[] = [...videos];
-    const adjectives = ["সেরা", "নতুন", "দারুণ", "এক্সক্লুসিভ", "স্পেশাল", "পপুলার", "সেরা কালেকশন", "ব্লকবাস্টার", "এপিক", "মনোরম", "রোমাঞ্চকর", "মেগা", "সুপারহিট", "কালজয়ী", "অসাধারণ"];
-    const suffixes = ["পার্ট ২", "এইচডি", "নতুন পর্ব", "ফুল মুভি", "বিশেষ সংস্করণ", "রিভিউ", "ক্লিপ", "শর্টকাট", "আনকাট", "স্পেশাল রিলিজ", "এইচডি কোয়ালিটি"];
+    const adjectives = translations[lang].extendedAdjectives;
+    const suffixes = translations[lang].extendedSuffixes;
     
     // Generate up to 180 distinct videos (30 pages of 6 items each)
     for (let i = videos.length; i < 180; i++) {
@@ -54,7 +57,7 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
       });
     }
     setExtendedVideos(list);
-  }, [videos]);
+  }, [videos, lang]);
 
   const videosSource = extendedVideos.length > 0 ? extendedVideos : videos;
 
@@ -185,7 +188,7 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
               {/* Slider Content */}
               <div className="absolute bottom-0 left-0 right-0 p-6 md:p-12 text-white flex flex-col items-start gap-2 md:gap-4 max-w-3xl">
                 <span className="bg-indigo-600 text-white font-bold text-xs uppercase px-3 py-1 rounded-full flex items-center gap-1 shadow-md">
-                  <Sparkles size={12} /> ফিচার্ড ভিডিও
+                  <Sparkles size={12} /> {t("featuredVideo")}
                 </span>
                 <h1 className="text-2xl md:text-4xl font-extrabold tracking-tight line-clamp-2 drop-shadow">
                   {featuredVideos[currentSlide].title}
@@ -194,17 +197,17 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
                   {featuredVideos[currentSlide].description}
                 </p>
                 <div className="flex items-center gap-4 text-xs font-mono text-gray-300">
-                  <span>ক্যাটাগরি: {featuredVideos[currentSlide].category.toUpperCase()}</span>
+                  <span>{t("categoryLabel")}: {featuredVideos[currentSlide].category.toUpperCase()}</span>
                   <span>•</span>
-                  <span>সময়: {featuredVideos[currentSlide].duration}</span>
+                  <span>{t("durationLabel")}: {featuredVideos[currentSlide].duration}</span>
                   <span>•</span>
-                  <span>রেজোলিউশন: {featuredVideos[currentSlide].resolution}</span>
+                  <span>{t("resolutionLabel")}: {featuredVideos[currentSlide].resolution}</span>
                 </div>
                 <Link
                   to={`/video/${featuredVideos[currentSlide].id}`}
                   className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm px-6 py-3 rounded-xl flex items-center gap-2 transition-all transform hover:scale-105 shadow-lg shadow-indigo-600/30"
                 >
-                  <Play size={16} fill="currentColor" /> এখনই দেখুন
+                  <Play size={16} fill="currentColor" /> {t("watchNow")}
                 </Link>
               </div>
             </motion.div>
@@ -254,13 +257,13 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500"></span>
               </span>
-              🔴 সরাসরি লাইভ খেলা সম্প্রচার (Active Live Sports & Matches)
+              {lang === "en" ? "🔴 Active Live Sports & Matches" : "🔴 সরাসরি লাইভ খেলা সম্প্রচার (Active Live Sports & Matches)"}
             </h2>
             <Link
               to="/live"
               className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
             >
-              সবগুলো লাইভ দেখুন <ChevronRight size={14} />
+              {lang === "en" ? "Watch All Live Streams" : "সবগুলো লাইভ দেখুন"} <ChevronRight size={14} />
             </Link>
           </div>
           
@@ -284,7 +287,7 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
                 {/* Live Indicator Badge */}
                 <span className="absolute top-2.5 left-2.5 bg-rose-600 text-white font-extrabold text-[9px] uppercase px-2 py-0.5 rounded-md flex items-center gap-1 shadow-sm">
                   <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
-                  সরাসরি লাইভ
+                  {lang === "en" ? "LIVE STREAM" : "সরাসরি লাইভ"}
                 </span>
 
                 {/* Play Button Icon Overlay on Hover */}
@@ -300,7 +303,7 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
                     {server.name || `SERVER ${idx + 1}`}
                   </p>
                   <h3 className="text-xs md:text-sm font-black text-white line-clamp-1 group-hover:text-rose-200 transition-colors">
-                    {server.name || "লাইভ ম্যাচ সম্প্রচার"}
+                    {server.name || (lang === "en" ? "Live Match Stream" : "লাইভ ম্যাচ সম্প্রচার")}
                   </h3>
                 </div>
               </Link>
@@ -311,7 +314,7 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
       {/* Category Icons Quick-Bar */}
       <section className="space-y-4">
         <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
-          🎥 ভিডিও ক্যাটাগরি
+          {lang === "en" ? "🎥 Video Categories" : "🎥 ভিডিও ক্যাটাগরি"}
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
           {categories.map((cat) => (
@@ -336,7 +339,7 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
         <section className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
-              <TrendingUp className="text-rose-500 animate-bounce" size={20} /> ট্রেন্ডিং ভিডিও
+              <TrendingUp className="text-rose-500 animate-bounce" size={20} /> {lang === "en" ? "Trending Videos" : "ট্রেন্ডিং ভিডিও"}
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
@@ -368,7 +371,7 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
                     <Link to={`/video/${video.id}`}>{video.title}</Link>
                   </h3>
                   <div className="flex items-center justify-between text-[11px] font-medium text-gray-500 dark:text-gray-400">
-                    <span>{video.views.toLocaleString()} বার দেখা হয়েছে</span>
+                    <span>{video.views.toLocaleString()} {t("views")}</span>
                     <span>{video.language}</span>
                   </div>
                 </div>
@@ -393,10 +396,10 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
             <h2 className="text-xl font-extrabold text-gray-900 dark:text-white flex items-center gap-2">
-              🧭 ভিডিও অন্বেষণ করুন (Explore)
+              🧭 {lang === "en" ? "Explore Videos" : "ভিডিও অন্বেষণ করুন (Explore)"}
             </h2>
             <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">
-              আপনার পছন্দের ক্যাটাগরি, ভাষা এবং রেজোলিউশন অনুযায়ী ফিল্টার করুন
+              {lang === "en" ? "Filter videos according to your favorite category, language, and resolution" : "আপনার পছন্দের ক্যাটাগরি, ভাষা এবং রেজোলিউশন অনুযায়ী ফিল্টার করুন"}
             </p>
           </div>
 
@@ -410,7 +413,7 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
                 onChange={(e) => setSelectedCat(e.target.value)}
                 className="bg-transparent font-semibold text-gray-700 dark:text-gray-300 focus:outline-none"
               >
-                <option value="all">সব ক্যাটাগরি</option>
+                <option value="all">{t("allCategories")}</option>
                 {categories.map((c) => (
                   <option key={c.slug} value={c.slug}>
                     {c.name}
@@ -426,9 +429,9 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
                 onChange={(e) => setSelectedLang(e.target.value)}
                 className="bg-transparent font-semibold text-gray-700 dark:text-gray-300 focus:outline-none"
               >
-                <option value="all">সব ভাষা</option>
-                <option value="Bengali">বাংলা (Bengali)</option>
-                <option value="English">ইংরেজি (English)</option>
+                <option value="all">{t("allLanguages")}</option>
+                <option value="Bengali">{lang === "en" ? "Bengali" : "বাংলা (Bengali)"}</option>
+                <option value="English">{lang === "en" ? "English" : "ইংরেজি (English)"}</option>
               </select>
             </div>
 
@@ -439,7 +442,7 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
                 onChange={(e) => setSelectedRes(e.target.value)}
                 className="bg-transparent font-semibold text-gray-700 dark:text-gray-300 focus:outline-none"
               >
-                <option value="all">সব রেজোলিউশন</option>
+                <option value="all">{t("allResolutions")}</option>
                 <option value="1080p">Full HD (1080p)</option>
                 <option value="720p">HD (720p)</option>
               </select>
@@ -452,8 +455,8 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
                 onChange={(e) => setSortBy(e.target.value)}
                 className="bg-transparent font-semibold text-indigo-600 dark:text-indigo-400 focus:outline-none"
               >
-                <option value="latest">সর্বশেষ আপলোড</option>
-                <option value="popular">জনপ্রিয়তা (views)</option>
+                <option value="latest">{t("latest")}</option>
+                <option value="popular">{t("popular")}</option>
               </select>
             </div>
           </div>
@@ -506,7 +509,7 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
                 </div>
                 <div className="px-4 pb-4 pt-1">
                   <div className="flex items-center justify-between text-[11px] font-medium text-gray-500 dark:text-gray-400 border-t border-gray-50 dark:border-gray-800/40 pt-3">
-                    <span>{video.views.toLocaleString()} বার দেখা হয়েছে</span>
+                    <span>{video.views.toLocaleString()} {t("views")}</span>
                     <span>{video.language}</span>
                   </div>
                 </div>
@@ -516,8 +519,12 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
         ) : (
           <div className="text-center py-16 bg-gray-50 dark:bg-gray-900/20 rounded-2xl border border-dashed border-gray-200 dark:border-gray-800">
             <span className="text-4xl">🔍</span>
-            <h3 className="font-bold text-gray-800 dark:text-gray-200 mt-3">কোনো ভিডিও পাওয়া যায়নি!</h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">অন্যান্য ফিল্টার সিলেক্ট করে পুনরায় চেষ্টা করুন।</p>
+            <h3 className="font-bold text-gray-800 dark:text-gray-200 mt-3">
+              {lang === "en" ? "No videos found!" : "কোনো ভিডিও পাওয়া যায়নি!"}
+            </h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {lang === "en" ? "Please select other filters and try again." : "অন্যান্য ফিল্টার সিলেক্ট করে পুনরায় চেষ্টা করুন।"}
+            </p>
           </div>
         )}
 
@@ -530,7 +537,7 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
                 disabled={currentPage === 1}
                 className="px-3.5 py-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 font-semibold text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 disabled:pointer-events-none transition-colors cursor-pointer"
               >
-                পূর্ববর্তী
+                {t("prevPage")}
               </button>
               {getPageNumbers().map((pageNum) => (
                 <button
@@ -542,7 +549,7 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
                       : "bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
                   }`}
                 >
-                  {toBengaliNumber(pageNum)}
+                  {lang === "en" ? pageNum : toBengaliNumber(pageNum)}
                 </button>
               ))}
               <button
@@ -550,13 +557,15 @@ export default function Home({ videos, categories, ads, settings }: HomeProps) {
                 disabled={currentPage === totalPages}
                 className="px-3.5 py-2 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 font-semibold text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 disabled:pointer-events-none transition-colors cursor-pointer"
               >
-                পরবর্তী
+                {t("nextPage")}
               </button>
             </div>
             
-            {/* Bengali Page Indicator */}
+            {/* Page Indicator */}
             <div className="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase tracking-wider">
-              পাতা নম্বর {toBengaliNumber(currentPage)} (মোট {toBengaliNumber(totalPages)} পাতার মধ্যে)
+              {lang === "en"
+                ? `Page ${currentPage} (of ${totalPages} pages)`
+                : `পাতা নম্বর ${toBengaliNumber(currentPage)} (মোট ${toBengaliNumber(totalPages)} পাতার মধ্যে)`}
             </div>
           </div>
         )}

@@ -35,6 +35,7 @@ import Profile from "./pages/Profile";
 import Breadcrumb from "./components/Breadcrumb";
 import AdSpace from "./components/AdSpace";
 import LucideIcon from "./components/LucideIcon";
+import { useLanguage } from "./context/LanguageContext";
 
 export default function App() {
   const [videos, setVideos] = useState<Video[]>([]);
@@ -102,6 +103,26 @@ export default function App() {
     }
     localStorage.setItem("streamplex_dark_mode", String(isDarkMode));
   }, [isDarkMode]);
+
+  // Sync website title and favicon dynamically
+  useEffect(() => {
+    const siteName = settings?.websiteName || "স্ট্রীমপ্লেক্স (StreamPlex)";
+    document.title = siteName;
+
+    if (settings?.favicon) {
+      let link: HTMLLinkElement | null = document.querySelector("link[rel~='icon']");
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'icon';
+        document.getElementsByTagName('head')[0].appendChild(link);
+      }
+      if (settings.favicon.length <= 4) { // Emoji detected
+        link.href = `data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${settings.favicon}</text></svg>`;
+      } else {
+        link.href = settings.favicon;
+      }
+    }
+  }, [settings]);
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
 
@@ -227,6 +248,7 @@ interface HeaderProps {
 function Header({ siteName, logoText, categories, isDarkMode, onToggleTheme }: HeaderProps) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { lang, setLang, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchVal, setSearchVal] = useState("");
   const [user, setUser] = useState<{ email: string; name: string } | null>(null);
@@ -290,7 +312,7 @@ function Header({ siteName, logoText, categories, isDarkMode, onToggleTheme }: H
           {!isOnline && (
             <span className="flex items-center gap-1 px-2.5 py-1 rounded-xl text-[10px] font-black text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 animate-pulse">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-              অফলাইন মোড
+              {lang === "en" ? "Offline Mode" : "অফলাইন মোড"}
             </span>
           )}
         </div>
@@ -299,7 +321,7 @@ function Header({ siteName, logoText, categories, isDarkMode, onToggleTheme }: H
         <form onSubmit={handleSearchSubmit} className="hidden md:flex items-center relative max-w-xs lg:max-w-md w-full">
           <input
             type="text"
-            placeholder="আপনার প্রিয় মুভি, নাটক বা কমেডি ভিডিও খুঁজুন..."
+            placeholder={t("searchPlaceholder")}
             value={searchVal}
             onChange={(e) => setSearchVal(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-950 dark:text-gray-50 font-medium"
@@ -315,7 +337,7 @@ function Header({ siteName, logoText, categories, isDarkMode, onToggleTheme }: H
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-black text-rose-600 dark:text-rose-400 bg-rose-500/10 dark:bg-rose-500/5 hover:bg-rose-500/20 transition-all border border-rose-500/20"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping" />
-            লাইভ দেখুন
+            {t("liveTv")}
           </Link>
 
           {/* Special Offers button */}
@@ -324,7 +346,7 @@ function Header({ siteName, logoText, categories, isDarkMode, onToggleTheme }: H
             className="hidden md:flex items-center gap-1.5 border border-gray-200 dark:border-gray-800 hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 px-3 py-1.5 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-950 transition-colors"
           >
             <Gift size={12} className="text-indigo-500 animate-bounce" />
-            অফার দেখুন
+            {t("offers")}
           </Link>
 
           {/* Categories Dropdown selector */}
@@ -339,7 +361,7 @@ function Header({ siteName, logoText, categories, isDarkMode, onToggleTheme }: H
               defaultValue="none"
               className="bg-transparent focus:outline-none cursor-pointer"
             >
-              <option value="none">ক্যাটাগরি সমূহ</option>
+              <option value="none">{t("categories")}</option>
               {categories.map((c) => (
                 <option key={c.slug} value={c.slug}>
                   {c.name}
@@ -359,7 +381,7 @@ function Header({ siteName, logoText, categories, isDarkMode, onToggleTheme }: H
                   to="/admin"
                   className="text-xs font-black text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 px-3 py-1.5 rounded-xl border border-amber-400 dark:border-amber-600 transition-all flex items-center gap-1 hover:shadow-sm"
                 >
-                  👑 অ্যাডমিন প্যানেল
+                  👑 {t("adminPanel")}
                 </Link>
               )}
               <Link
@@ -372,7 +394,7 @@ function Header({ siteName, logoText, categories, isDarkMode, onToggleTheme }: H
                 onClick={handleLogout}
                 className="text-xs font-extrabold text-rose-600 hover:text-rose-500 transition-colors cursor-pointer px-1 ml-1"
               >
-                লগআউট
+                {t("logout")}
               </button>
             </div>
           ) : (
@@ -381,22 +403,31 @@ function Header({ siteName, logoText, categories, isDarkMode, onToggleTheme }: H
                 to="/login"
                 className="text-xs font-extrabold text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-2 py-1.5 transition-colors"
               >
-                লগইন
+                {t("login")}
               </Link>
               <Link
                 to="/register"
                 className="text-xs font-black bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-xl transition-colors shadow-md shadow-indigo-600/10"
               >
-                নিবন্ধন
+                {t("register")}
               </Link>
             </div>
           )}
+
+          {/* Language Selector */}
+          <button
+            onClick={() => setLang(lang === "en" ? "bn" : "en")}
+            className="px-2.5 py-1.5 rounded-xl bg-gray-50 hover:bg-gray-100 dark:bg-gray-850 dark:hover:bg-gray-800 border border-gray-100 dark:border-gray-800/80 text-[11px] font-black text-indigo-600 dark:text-indigo-400 transition-colors flex items-center gap-1 cursor-pointer"
+            title={lang === "en" ? "বাংলা করুন" : "Switch to English"}
+          >
+            🌐 {lang === "en" ? "EN" : "বাংলা"}
+          </button>
 
           {/* Theme selector */}
           <button
             onClick={onToggleTheme}
             className="p-2 rounded-xl bg-gray-50 hover:bg-gray-100 dark:bg-gray-850 dark:hover:bg-gray-800 border border-gray-100 dark:border-gray-800/80 text-gray-600 dark:text-gray-300 transition-colors cursor-pointer"
-            title={isDarkMode ? "লাইট মোড চালু করুন" : "ডার্ক মোড চালু করুন"}
+            title={isDarkMode ? (lang === "en" ? "Light Mode" : "লাইট মোড চালু করুন") : (lang === "en" ? "Dark Mode" : "ডার্ক মোড চালু করুন")}
           >
             {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
           </button>
@@ -419,7 +450,7 @@ function Header({ siteName, logoText, categories, isDarkMode, onToggleTheme }: H
           <form onSubmit={handleSearchSubmit} className="relative w-full">
             <input
               type="text"
-              placeholder="ভিডিও খুঁজুন..."
+              placeholder={lang === "en" ? "Search videos..." : "ভিডিও খুঁজুন..."}
               value={searchVal}
               onChange={(e) => setSearchVal(e.target.value)}
               className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 focus:outline-none"
@@ -434,20 +465,20 @@ function Header({ siteName, logoText, categories, isDarkMode, onToggleTheme }: H
               className="flex items-center justify-center gap-1.5 p-2.5 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/10 text-center text-xs font-black"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping" />
-              লাইভ দেখুন
+              {t("liveTv")}
             </Link>
             <Link
               to="/offers"
               className="flex items-center justify-center gap-1.5 p-2.5 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-200 text-center text-xs font-extrabold"
             >
               <Gift size={13} className="text-indigo-500" />
-              অফার দেখুন
+              {t("offers")}
             </Link>
           </div>
 
           {/* Mobile Categories Links */}
           <div className="space-y-1">
-            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">ভিডিও ক্যাটাগরি</span>
+            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">{t("categories")}</span>
             <div className="grid grid-cols-2 gap-2">
               {categories.map((c) => (
                 <Link
@@ -465,14 +496,14 @@ function Header({ siteName, logoText, categories, isDarkMode, onToggleTheme }: H
           <div className="h-px bg-gray-100 dark:bg-gray-850" />
 
            {/* Mobile Auth Profile block */}
-          <div className="p-3 bg-gray-50 dark:bg-gray-950/40 rounded-xl border border-gray-100 dark:border-gray-850 flex flex-col gap-2">
+          <div className="p-3 bg-gray-50 dark:bg-gray-950/40 rounded-xl border border-gray-100 dark:border-gray-800 flex flex-col gap-2">
             {user ? (
               <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between text-xs font-bold">
                   <Link to="/profile" className="text-indigo-600 dark:text-indigo-400 hover:underline">
-                    👤 {user.name} (প্রোফাইল)
+                    👤 {user.name} ({t("profile")})
                   </Link>
-                  <button onClick={handleLogout} className="text-rose-600 font-extrabold cursor-pointer">লগআউট</button>
+                  <button onClick={handleLogout} className="text-rose-600 font-extrabold cursor-pointer">{t("logout")}</button>
                 </div>
                 {(user.email?.toLowerCase() === "shahinkhan28r@gmail.com" || 
                   user.email?.toLowerCase() === "shahinkhan28uu@gmail.com" || 
@@ -481,7 +512,7 @@ function Header({ siteName, logoText, categories, isDarkMode, onToggleTheme }: H
                     to="/admin"
                     className="w-full text-center bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white py-2 rounded-lg text-xs font-black"
                   >
-                    👑 অ্যাডমিন প্যানেল
+                    👑 {t("adminPanel")}
                   </Link>
                 )}
               </div>
@@ -491,13 +522,13 @@ function Header({ siteName, logoText, categories, isDarkMode, onToggleTheme }: H
                   to="/login"
                   className="w-full text-center bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 py-2 rounded-lg text-xs font-bold"
                 >
-                  লগইন
+                  {t("login")}
                 </Link>
                 <Link
                   to="/register"
                   className="w-full text-center bg-indigo-600 text-white py-2 rounded-lg text-xs font-bold"
                 >
-                  নিবন্ধন
+                  {t("register")}
                 </Link>
               </div>
             )}
@@ -522,6 +553,7 @@ interface FooterProps {
 }
 
 function Footer({ siteName, logoText, contactEmail, socialLinks }: FooterProps) {
+  const { lang } = useLanguage();
   return (
     <footer className="bg-white dark:bg-gray-950 border-t border-gray-100 dark:border-gray-900 transition-colors py-12 text-xs">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -537,21 +569,29 @@ function Footer({ siteName, logoText, contactEmail, socialLinks }: FooterProps) 
             </span>
           </div>
           <p className="text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
-            মুভি, নাটক, কমেডি ও এডুকেশনাল ভিডিওর সেরা সংগ্রহশালা। সম্পূর্ণ ফ্রি ও বাফারিং ছাড়া উন্নত ভিডিও প্লেয়ারে উপভোগ করুন সেরা কন্টেন্ট।
+            {lang === "en" 
+              ? "The best collection of movies, dramas, comedy, and educational videos. Enjoy high-quality content without buffering on our advanced player." 
+              : "মুভি, নাটক, কমেডি ও এডুকেশনাল ভিডিওর সেরা সংগ্রহশালা। সম্পূর্ণ ফ্রি ও বাফারিং ছাড়া উন্নত ভিডিও প্লেয়ারে উপভোগ করুন সেরা কন্টেন্ট।"}
           </p>
         </div>
 
         {/* Col 2: Policy & Compliance */}
         <div className="space-y-3">
-          <h4 className="font-extrabold text-[11px] text-gray-800 dark:text-gray-200 uppercase tracking-widest">কপিরাইট ও পলিসি</h4>
+          <h4 className="font-extrabold text-[11px] text-gray-800 dark:text-gray-200 uppercase tracking-widest">
+            {lang === "en" ? "Copyright & Policy" : "কপিরাইট ও পলিসি"}
+          </h4>
           <p className="text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
-            শুধুমাত্র নিজের তৈরি অথবা যথাযথ লাইসেন্সপ্রাপ্ত ভিডিও আপলোড করার সুবিধা থাকবে। কপিরাইটযুক্ত ভিডিও অনুমতি ছাড়া প্রকাশ করার জন্য ওয়েবসাইটটি ব্যবহার করা যাবে না।
+            {lang === "en"
+              ? "Only user-authored or properly licensed video uploads are permitted. This platform must not be used to distribute copyrighted materials without permission."
+              : "শুধুমাত্র নিজের তৈরি অথবা যথাযথ লাইসেন্সপ্রাপ্ত ভিডিও আপলোড করার সুবিধা থাকবে। কপিরাইটযুক্ত ভিডিও অনুমতি ছাড়া প্রকাশ করার জন্য ওয়েবসাইটটি ব্যবহার করা যাবে না।"}
           </p>
         </div>
 
         {/* Col 3: Contact and social connect */}
         <div className="space-y-4">
-          <h4 className="font-extrabold text-[11px] text-gray-800 dark:text-gray-200 uppercase tracking-widest">যোগাযোগ করুন</h4>
+          <h4 className="font-extrabold text-[11px] text-gray-800 dark:text-gray-200 uppercase tracking-widest">
+            {lang === "en" ? "Contact Us" : "যোগাযোগ করুন"}
+          </h4>
           <div className="space-y-2 text-gray-500 dark:text-gray-400 font-medium">
             <div className="flex items-center gap-2">
               <Mail size={14} className="text-indigo-500" />
@@ -566,7 +606,7 @@ function Footer({ siteName, logoText, contactEmail, socialLinks }: FooterProps) 
               target="_blank"
               rel="noreferrer"
               className="p-2.5 rounded-full bg-gray-50 hover:bg-indigo-50 hover:text-indigo-600 dark:bg-gray-900 dark:hover:bg-indigo-950 text-gray-400 transition-colors"
-              title="ফেসবুক"
+              title={lang === "en" ? "Facebook" : "ফেসবুক"}
             >
               <Facebook size={16} />
             </a>
@@ -575,7 +615,7 @@ function Footer({ siteName, logoText, contactEmail, socialLinks }: FooterProps) 
               target="_blank"
               rel="noreferrer"
               className="p-2.5 rounded-full bg-gray-50 hover:bg-rose-50 hover:text-rose-600 dark:bg-gray-900 dark:hover:bg-rose-950 text-gray-400 transition-colors"
-              title="ইউটিউব"
+              title={lang === "en" ? "YouTube" : "ইউটিউব"}
             >
               <Youtube size={16} />
             </a>
@@ -584,7 +624,7 @@ function Footer({ siteName, logoText, contactEmail, socialLinks }: FooterProps) 
               target="_blank"
               rel="noreferrer"
               className="p-2.5 rounded-full bg-gray-50 hover:bg-sky-50 hover:text-sky-600 dark:bg-gray-900 dark:hover:bg-sky-950 text-gray-400 transition-colors"
-              title="টুইটার"
+              title={lang === "en" ? "Twitter" : "টুইটার"}
             >
               <Twitter size={16} />
             </a>
@@ -593,7 +633,11 @@ function Footer({ siteName, logoText, contactEmail, socialLinks }: FooterProps) 
       </div>
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pt-6 border-t border-gray-50 dark:border-gray-900 text-center font-semibold text-gray-400 dark:text-gray-600">
-        <p>© {new Date().getFullYear()} {siteName}. সর্বস্বত্ব সংরক্ষিত।</p>
+        <p>
+          {lang === "en"
+            ? `© ${new Date().getFullYear()} ${siteName}. All rights reserved.`
+            : `© ${new Date().getFullYear()} ${siteName}. সর্বস্বত্ব সংরক্ষিত।`}
+        </p>
       </div>
     </footer>
   );

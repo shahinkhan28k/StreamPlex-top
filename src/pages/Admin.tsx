@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
 import { Video, Category, Ad, WebsiteSettings, LoginHistory, User, VideoComment, Offer, PaymentRequest } from "../types";
 import {
   LayoutDashboard,
@@ -60,6 +61,7 @@ export default function Admin({
   onRefreshSettings,
   onRefreshUsers
 }: AdminProps) {
+  const { lang, t } = useLanguage();
   // Authorization State
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [username, setUsername] = useState("");
@@ -1083,17 +1085,23 @@ export default function Admin({
           <div className="w-16 h-16 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded-2xl flex items-center justify-center mx-auto shadow-sm">
             <Lock size={32} />
           </div>
-          <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">অ্যাডমিন প্যানেল লগইন</h2>
-          <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">নিরাপদ ড্যাশবোর্ড অ্যাক্সেস করতে লগইন করুন</p>
+          <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">
+            {lang === "en" ? "Admin Panel Login" : "অ্যাডমিন প্যানেল লগইন"}
+          </h2>
+          <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+            {lang === "en" ? "Login to access secure dashboard" : "নিরাপদ ড্যাশবোর্ড অ্যাক্সেস করতে লগইন করুন"}
+          </p>
         </div>
 
         <form onSubmit={handleLoginSubmit} className="space-y-4">
           <div className="space-y-1">
-            <label className="text-xs font-bold text-gray-700 dark:text-gray-300">ইউজারনেম</label>
+            <label className="text-xs font-bold text-gray-700 dark:text-gray-300">
+              {lang === "en" ? "Username" : "ইউজারনেম"}
+            </label>
             <input
               type="text"
               required
-              placeholder="ইউজারনেম লিখুন"
+              placeholder={lang === "en" ? "Enter username" : "ইউজারনেম লিখুন"}
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="w-full border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-950 dark:text-gray-50"
@@ -1101,11 +1109,13 @@ export default function Admin({
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-bold text-gray-700 dark:text-gray-300">পাসওয়ার্ড</label>
+            <label className="text-xs font-bold text-gray-700 dark:text-gray-300">
+              {lang === "en" ? "Password" : "পাসওয়ার্ড"}
+            </label>
             <input
               type="password"
               required
-              placeholder="পাসওয়ার্ড লিখুন"
+              placeholder={lang === "en" ? "Enter password" : "পাসওয়ার্ড লিখুন"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-950 dark:text-gray-50"
@@ -1123,7 +1133,7 @@ export default function Admin({
             type="submit"
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm py-3 rounded-xl transition-all shadow-lg shadow-indigo-600/20 cursor-pointer"
           >
-            লগইন করুন
+            {lang === "en" ? "Login" : "লগইন করুন"}
           </button>
         </form>
       </div>

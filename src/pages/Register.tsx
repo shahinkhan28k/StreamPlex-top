@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
 import { WebsiteSettings } from "../types";
 import { Mail, Lock, User, UserPlus, AlertCircle, Sparkles, CheckCircle2 } from "lucide-react";
 
 export default function Register() {
   const navigate = useNavigate();
+  const { lang, t } = useLanguage();
   const [settings, setSettings] = useState<WebsiteSettings | null>(null);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -27,12 +29,12 @@ export default function Register() {
     setSuccess("");
 
     if (!username || !email || !password || !confirmPassword) {
-      setError("অনুগ্রহ করে সকল তথ্য পূরণ করুন।");
+      setError(lang === "en" ? "Please fill in all information." : "অনুগ্রহ করে সকল তথ্য পূরণ করুন।");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("পাসওয়ার্ড দুটি মিলছে না!");
+      setError(lang === "en" ? "Passwords do not match!" : "পাসওয়ার্ড দুটি মিলছে না!");
       return;
     }
 
@@ -47,7 +49,7 @@ export default function Register() {
       .then((res) => res.json())
       .then((data) => {
         setLoading(false);
-        setSuccess("একাউন্ট তৈরি সফল হয়েছে! আমরা আপনাকে লগইন করাচ্ছি...");
+        setSuccess(lang === "en" ? "Account created successfully! Logging you in..." : "একাউন্ট তৈরি সফল হয়েছে! আমরা আপনাকে লগইন করাচ্ছি...");
         
         // Auto Log in user locally
         localStorage.setItem("streamplex_logged_user", JSON.stringify({ email: data.email, name: data.userName }));
@@ -58,13 +60,18 @@ export default function Register() {
       })
       .catch((err) => {
         console.error("Error creating user:", err);
-        setError("একাউন্ট তৈরি করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।");
+        setError(lang === "en" ? "Something went wrong. Please try again." : "একাউন্ট তৈরি করতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।");
         setLoading(false);
       });
   };
 
-  const pageTitle = settings?.registerPageTitle || "নতুন একাউন্ট তৈরি করুন";
-  const pageSubtitle = settings?.registerPageSubtitle || "একাউন্ট তৈরি করে আনলক করুন হাজারো প্রিমিয়াম ভিডিও কনটেন্ট।";
+  const defaultTitle = lang === "en" ? "Create New Account" : "নতুন একাউন্ট তৈরি করুন";
+  const defaultSubtitle = lang === "en" 
+    ? "Create an account to unlock thousands of premium video contents."
+    : "একাউন্ট তৈরি করে আনলক করুন হাজারো প্রিমিয়াম ভিডিও কনটেন্ট।";
+
+  const pageTitle = settings?.registerPageTitle || defaultTitle;
+  const pageSubtitle = settings?.registerPageSubtitle || defaultSubtitle;
 
   return (
     <div className="py-12 flex items-center justify-center min-h-[calc(100vh-250px)]">
@@ -102,12 +109,12 @@ export default function Register() {
         <form onSubmit={handleRegister} className="space-y-4">
           <div className="space-y-1.5">
             <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest block">
-              ইউজারনেম (পূর্ণ নাম)
+              {lang === "en" ? "Username (Full Name)" : "ইউজারনেম (পূর্ণ নাম)"}
             </label>
             <div className="relative">
               <input
                 type="text"
-                placeholder="সাকিব হাসান"
+                placeholder={lang === "en" ? "John Doe" : "সাকিব হাসান"}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full bg-gray-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-850 rounded-xl pl-10 pr-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-950 dark:text-gray-50"
@@ -118,7 +125,7 @@ export default function Register() {
 
           <div className="space-y-1.5">
             <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest block">
-              ইমেইল অ্যাড্রেস
+              {lang === "en" ? "Email Address" : "ইমেইল অ্যাড্রেস"}
             </label>
             <div className="relative">
               <input
@@ -134,7 +141,7 @@ export default function Register() {
 
           <div className="space-y-1.5">
             <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest block">
-              পাসওয়ার্ড
+              {lang === "en" ? "Password" : "পাসওয়ার্ড"}
             </label>
             <div className="relative">
               <input
@@ -150,7 +157,7 @@ export default function Register() {
 
           <div className="space-y-1.5">
             <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest block">
-              পাসওয়ার্ড নিশ্চিত করুন
+              {lang === "en" ? "Confirm Password" : "পাসওয়ার্ড নিশ্চিত করুন"}
             </label>
             <div className="relative">
               <input
@@ -174,7 +181,7 @@ export default function Register() {
             ) : (
               <>
                 <UserPlus size={14} />
-                <span>একাউন্ট তৈরি করুন</span>
+                <span>{lang === "en" ? "Register" : "একাউন্ট তৈরি করুন"}</span>
               </>
             )}
           </button>
@@ -184,9 +191,9 @@ export default function Register() {
 
         {/* Footer info link */}
         <p className="text-[11px] text-gray-500 dark:text-gray-400 text-center font-medium">
-          ইতিমধ্যে একাউন্ট আছে?{" "}
+          {lang === "en" ? "Already have an account? " : "ইতিমধ্যে একাউন্ট আছে? "}
           <Link to="/login" className="text-indigo-600 dark:text-indigo-400 font-extrabold hover:underline">
-            লগইন করুন
+            {t("login")}
           </Link>
         </p>
 

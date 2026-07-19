@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
 import { WebsiteSettings } from "../types";
 import { Mail, Lock, LogIn, AlertCircle, ShieldAlert, Sparkles, CheckCircle2 } from "lucide-react";
 
 export default function Login() {
   const navigate = useNavigate();
+  const { lang, t } = useLanguage();
   const [settings, setSettings] = useState<WebsiteSettings | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,7 +27,7 @@ export default function Login() {
     setSuccess("");
 
     if (!email || !password) {
-      setError("অনুগ্রহ করে ইমেইল এবং পাসওয়ার্ড দুটিই পূরণ করুন।");
+      setError(lang === "en" ? "Please fill in both email and password." : "অনুগ্রহ করে ইমেইল এবং পাসওয়ার্ড দুটিই পূরণ করুন।");
       return;
     }
 
@@ -36,7 +38,7 @@ export default function Login() {
       setLoading(false);
       // Simulate login
       localStorage.setItem("streamplex_logged_user", JSON.stringify({ email, name: email.split("@")[0] }));
-      setSuccess("লগইন সফল হয়েছে! ড্যাশবোর্ডে রিডাইরেক্ট করা হচ্ছে...");
+      setSuccess(lang === "en" ? "Login successful! Redirecting..." : "লগইন সফল হয়েছে! ড্যাশবোর্ডে রিডাইরেক্ট করা হচ্ছে...");
       setTimeout(() => {
         // Force refresh components in App
         window.location.href = "/";
@@ -44,8 +46,13 @@ export default function Login() {
     }, 1000);
   };
 
-  const pageTitle = settings?.loginPageTitle || "স্ট্রীমপ্লেক্স একাউন্ট লগইন";
-  const pageSubtitle = settings?.loginPageSubtitle || "আপনার প্রিয় লাইভ স্পোর্টস, নাটক ও বিনোদন উপভোগ করতে লগইন করুন।";
+  const defaultTitle = lang === "en" ? "StreamPlex Account Login" : "স্ট্রীমপ্লেক্স একাউন্ট লগইন";
+  const defaultSubtitle = lang === "en" 
+    ? "Login to enjoy your favorite live sports, dramas & entertainment."
+    : "আপনার প্রিয় লাইভ স্পোর্টস, নাটক ও বিনোদন উপভোগ করতে লগইন করুন।";
+
+  const pageTitle = settings?.loginPageTitle || defaultTitle;
+  const pageSubtitle = settings?.loginPageSubtitle || defaultSubtitle;
 
   return (
     <div className="py-12 flex items-center justify-center min-h-[calc(100vh-250px)]">
@@ -83,7 +90,7 @@ export default function Login() {
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="space-y-1.5">
             <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest block">
-              ইমেইল অ্যাড্রেস
+              {lang === "en" ? "Email Address" : "ইমেইল অ্যাড্রেস"}
             </label>
             <div className="relative">
               <input
@@ -99,7 +106,7 @@ export default function Login() {
 
           <div className="space-y-1.5">
             <label className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest block">
-              পাসওয়ার্ড
+              {lang === "en" ? "Password" : "পাসওয়ার্ড"}
             </label>
             <div className="relative">
               <input
@@ -123,7 +130,7 @@ export default function Login() {
             ) : (
               <>
                 <LogIn size={14} />
-                <span>লগইন করুন</span>
+                <span>{lang === "en" ? "Login" : "লগইন করুন"}</span>
               </>
             )}
           </button>
@@ -133,9 +140,9 @@ export default function Login() {
 
         {/* Footer info link */}
         <p className="text-[11px] text-gray-500 dark:text-gray-400 text-center font-medium">
-          স্ট্রীমপ্লেক্স-এ নতুন?{" "}
+          {lang === "en" ? "New to StreamPlex? " : "স্ট্রীমপ্লেক্স-এ নতুন? "}
           <Link to="/register" className="text-indigo-600 dark:text-indigo-400 font-extrabold hover:underline">
-            নতুন একাউন্ট তৈরি করুন
+            {lang === "en" ? "Create New Account" : "নতুন একাউন্ট তৈরি করুন"}
           </Link>
         </p>
 

@@ -1,0 +1,21 @@
+{
+  "__comment_bn__": "এই ফাইলটি আপনার হোস্টিং প্যানেল (যেমন cPanel, VPS বা অন্যান্য হোস্টিং) এর ডাটাবেজ কানেকশন কনফিগার করার জন্য।",
+  "__comment_en__": "This file is for configuring your database connection when deploying to other hosting panels (such as cPanel, VPS, or others).",
+  "database": {
+    "DB_CONNECTION": "mysql",
+    "DB_HOST": "127.0.0.1",
+    "DB_PORT": "3306",
+    "DB_DATABASE": "streamplex_db",
+    "DB_USERNAME": "streamplex_user",
+    "DB_PASSWORD": "your_database_password_here"
+  },
+  "admin_fallback": {
+    "ADMIN_EMAIL": "shahinkhan28r@gmail.com",
+    "ADMIN_PASSWORD": "admin_secure_password"
+  },
+  "app_settings": {
+    "PORT": 3000,
+    "NODE_ENV": "production",
+    "WEBSITE_URL": "https://yourdomain.com"
+  }
+}

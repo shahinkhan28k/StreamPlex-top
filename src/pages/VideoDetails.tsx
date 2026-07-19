@@ -20,6 +20,7 @@ import {
   Bookmark,
   Crown
 } from "lucide-react";
+import { useLanguage } from "../context/LanguageContext";
 import VideoPlayer from "../components/VideoPlayer";
 import AdSpace from "../components/AdSpace";
 
@@ -30,6 +31,7 @@ interface VideoDetailsProps {
 }
 
 export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDetailsProps) {
+  const { lang, t } = useLanguage();
   const { id } = useParams();
   const navigate = useNavigate();
   const [video, setVideo] = useState<Video | null>(null);
@@ -230,7 +232,7 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
         .catch(console.error);
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert("ভিডিও লিঙ্কটি ক্লিপবোর্ডে কপি করা হয়েছে! 🔗");
+      alert(lang === "en" ? "Video link copied to clipboard! 🔗" : "ভিডিও লিঙ্কটি ক্লিপবোর্ডে কপি করা হয়েছে! 🔗");
     }
   };
 
@@ -250,23 +252,27 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
             <div className="w-16 h-16 rounded-full bg-amber-500/10 text-amber-400 flex items-center justify-center mb-4 shadow-lg shadow-amber-500/10 animate-pulse">
               <Crown size={32} />
             </div>
-            <h2 className="text-lg md:text-xl font-black text-amber-400">প্রিমিয়াম কন্টেন্ট! ⭐</h2>
+            <h2 className="text-lg md:text-xl font-black text-amber-400">
+              {lang === "en" ? "Premium Content! ⭐" : "প্রিমিয়াম কন্টেন্ট! ⭐"}
+            </h2>
             <p className="text-xs text-gray-300 max-w-md mt-2 leading-relaxed">
-              এই ভিডিওটি শুধুমাত্র আমাদের সম্মানিত প্রিমিয়াম মেম্বারদের জন্য সংরক্ষিত। অনুগ্রহ করে প্রিমিয়াম সাবস্ক্রিপশন প্যাকেজ অ্যাক্টিভেট করে আজই দেখা শুরু করুন।
+              {lang === "en"
+                ? "This video is reserved for our premium members. Please activate a premium subscription package to start watching today."
+                : "এই ভিডিওটি শুধুমাত্র আমাদের সম্মানিত প্রিমিয়াম মেম্বারদের জন্য সংরক্ষিত। অনুগ্রহ করে প্রিমিয়াম সাবস্ক্রিপশন প্যাকেজ অ্যাক্টিভেট করে আজই দেখা শুরু করুন।"}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3 mt-6">
               <Link
                 to="/offers"
                 className="bg-gradient-to-r from-amber-500 to-yellow-500 text-white font-black text-xs py-2.5 px-6 rounded-xl shadow-lg shadow-amber-500/20 hover:scale-105 transition-all flex items-center gap-1.5"
               >
-                <Sparkles size={14} /> প্রিমিয়াম প্যাকেজ কিনুন ⚡
+                <Sparkles size={14} /> {lang === "en" ? "Buy Premium Package ⚡" : "প্রিমিয়াম প্যাকেজ কিনুন ⚡"}
               </Link>
               {!currentUser && (
                 <Link
                   to="/login"
                   className="bg-white/10 text-white hover:bg-white/15 border border-white/10 font-bold text-xs py-2.5 px-6 rounded-xl transition-all"
                 >
-                  লগইন করুন
+                  {t("login")}
                 </Link>
               )}
             </div>
@@ -287,7 +293,7 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
               </div>
               <div className="flex items-center gap-1 text-[11px] font-bold text-gray-300 font-mono">
                 <Clock size={12} className="text-indigo-400" />
-                <span>{!isTimerStarted ? "ক্লিক করুন" : adCountdown > 0 ? `${adCountdown}s` : "সম্পন্ন"}</span>
+                <span>{!isTimerStarted ? (lang === "en" ? "Click Ad" : "ক্লিক করুন") : adCountdown > 0 ? `${adCountdown}s` : (lang === "en" ? "Completed" : "সম্পন্ন")}</span>
               </div>
             </div>
 
@@ -299,10 +305,12 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
                     <Lock size={18} />
                   </div>
                   <h3 className="text-sm font-extrabold text-white">
-                    ভিডিওটি বর্তমানে লক করা আছে
+                    {lang === "en" ? "This Video is Currently Locked" : "ভিডিওটি বর্তমানে লক করা আছে"}
                   </h3>
                   <p className="text-[11px] text-gray-300 leading-relaxed font-medium">
-                    ভিডিওটি আনলক করতে প্রথমে নিচের <b>বিজ্ঞাপন বা ডাইরেক্ট লিঙ্কে</b> ক্লিক করুন। ক্লিক করার সাথে সাথে টাইমিং শুরু হবে এবং টাইমিং শেষে ভিডিওটি দেখতে পারবেন।
+                    {lang === "en"
+                      ? "To unlock this video, please click on the direct ad link below first. Once clicked, the countdown will start, and you can play the video after completion."
+                      : "ভিডিওটি আনলক করতে প্রথমে নিচের বিজ্ঞাপন বা ডাইরেক্ট লিঙ্কে ক্লিক করুন। ক্লিক করার সাথে সাথে টাইমিং শুরু হবে এবং টাইমিং শেষে ভিডিওটি দেখতে পারবেন।"}
                   </p>
                   
                   {/* Direct Link Trigger Button */}
@@ -325,7 +333,7 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
                     }}
                     className="mt-2 inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-black text-xs px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-600/30 hover:scale-105 transition-all cursor-pointer"
                   >
-                    <Sparkles size={14} /> ডাইরেক্ট লিংক (বিজ্ঞাপন) ক্লিক করুন
+                    <Sparkles size={14} /> {lang === "en" ? "Click Direct Link (Ad)" : "ডাইরেক্ট লিংক (বিজ্ঞাপন) ক্লিক করুন"}
                   </button>
                 </div>
               ) : adCountdown > 0 ? (
@@ -334,10 +342,12 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
                     {adCountdown}
                   </div>
                   <h3 className="text-sm font-extrabold text-white">
-                    ভিডিওটি আনলক হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...
+                    {lang === "en" ? "Unlocking video, please wait..." : "ভিডিওটি আনলক হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন..."}
                   </h3>
                   <p className="text-[11px] text-gray-400 leading-relaxed font-medium">
-                    এই ভিডিওটি দেখতে অনুগ্রহ করে {adCountdown} সেকেন্ড অপেক্ষা করুন। নিচে আপনার জন্য একটি বিজ্ঞাপন লোড হয়েছে।
+                    {lang === "en" 
+                      ? `Please wait ${adCountdown} seconds to watch this video. An advertisement is loaded below.`
+                      : `এই ভিডিওটি দেখতে অনুগ্রহ করে ${adCountdown} সেকেন্ড অপেক্ষা করুন। নিচে আপনার জন্য একটি বিজ্ঞাপন লোড হয়েছে।`}
                   </p>
                 </div>
               ) : (
@@ -347,10 +357,10 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
                   </div>
                   <div>
                     <h3 className="text-base font-extrabold text-emerald-400">
-                      ভিডিওটি আনলক করা হয়েছে! 🎉
+                      {lang === "en" ? "Video Unlocked! 🎉" : "ভিডিওটি আনলক করা হয়েছে! 🎉"}
                     </h3>
                     <p className="text-[11px] text-gray-300 font-medium">
-                      নিচের বাটনে ক্লিক করে এখনই সম্পূর্ণ ভিডিওটি উপভোগ করুন।
+                      {lang === "en" ? "Enjoy the full video by clicking the button below." : "নিচের বাটনে ক্লিক করে এখনই সম্পূর্ণ ভিডিওটি উপভোগ করুন।"}
                     </p>
                   </div>
                 </div>
@@ -368,7 +378,9 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
                   <div className="py-2.5 px-4 text-left space-y-1 bg-gradient-to-r from-indigo-950/40 to-slate-900/40 rounded-xl">
                     <div className="font-extrabold text-xs text-indigo-400">StreamPlex Premium 📺</div>
                     <p className="text-[10px] text-gray-400 leading-normal text-left">
-                      মাত্র ৯৯ টাকায় পান প্রিমিয়াম একাউন্ট! বিজ্ঞাপনহীন স্ট্রিমিং, আনলিমিটেড লাইভ স্পোর্টস, নাটক ও মুভি উপভোগ করুন আজই।
+                      {lang === "en" 
+                        ? "Get a premium account for only 99 Taka! Enjoy ad-free streaming, unlimited live sports, dramas & movies today."
+                        : "মাত্র ৯৯ টাকায় পান প্রিমিয়াম একাউন্ট! বিজ্ঞাপনহীন স্ট্রিমিং, আনলিমিটেড লাইভ স্পোর্টস, নাটক ও মুভি উপভোগ করুন আজই।"}
                     </p>
                   </div>
                 )}
@@ -384,7 +396,11 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
                 className="w-full md:w-auto bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 disabled:text-gray-500 text-white font-extrabold text-xs py-2 px-6 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-600/15 cursor-pointer disabled:cursor-not-allowed"
               >
                 <Play size={13} />
-                {!isTimerStarted ? "প্রথমে বিজ্ঞাপনে ক্লিক করুন" : adCountdown > 0 ? `ভিডিও প্লে করতে ${adCountdown} সেকেন্ড বাকি...` : "ভিডিও প্লে করুন"}
+                {!isTimerStarted 
+                  ? (lang === "en" ? "Click Ad First" : "প্রথমে বিজ্ঞাপনে ক্লিক করুন") 
+                  : adCountdown > 0 
+                    ? (lang === "en" ? `${adCountdown}s remaining to play...` : `ভিডিও প্লে করতে ${adCountdown} সেকেন্ড বাকি...`) 
+                    : (lang === "en" ? "Play Video" : "ভিডিও প্লে করুন")}
               </button>
             </div>
           </div>
@@ -418,11 +434,11 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
             <div className="flex items-center gap-4 text-gray-500 dark:text-gray-400 font-medium">
               <span className="flex items-center gap-1.5">
                 <Eye size={15} className="text-indigo-500" />
-                {video.views.toLocaleString()} বার দেখা হয়েছে
+                {video.views.toLocaleString()} {t("views")}
               </span>
               <span className="flex items-center gap-1.5">
                 <Calendar size={15} />
-                {new Date(video.createdAt).toLocaleDateString("bn-BD", {
+                {new Date(video.createdAt).toLocaleDateString(lang === "en" ? "en-US" : "bn-BD", {
                   year: "numeric",
                   month: "long",
                   day: "numeric"
@@ -441,7 +457,7 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
                 }`}
               >
                 <Heart size={15} fill={liked ? "currentColor" : "none"} />
-                {likesCount} লাইক
+                {likesCount} {lang === "en" ? "Likes" : "লাইক"}
               </button>
 
               <button
@@ -453,7 +469,7 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
                 }`}
               >
                 <Bookmark size={15} fill={inWatchlist ? "currentColor" : "none"} />
-                {inWatchlist ? "সেভ করা আছে" : "ওয়াচলিস্ট"}
+                {inWatchlist ? (lang === "en" ? "Saved" : "সেভ করা আছে") : (lang === "en" ? "Watchlist" : "ওয়াচলিস্ট")}
               </button>
 
               <button
@@ -461,7 +477,7 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
                 className="flex items-center gap-1.5 font-bold bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 py-2 px-3.5 rounded-xl transition-all"
               >
                 <Share2 size={15} />
-                শেয়ার
+                {lang === "en" ? "Share" : "শেয়ার"}
               </button>
             </div>
           </div>
@@ -469,9 +485,11 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
 
         {/* Video Description Card */}
         <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800/80 p-5 rounded-2xl shadow-sm space-y-3">
-          <h3 className="font-bold text-sm text-gray-900 dark:text-white">ভিডিও বিবরণী</h3>
+          <h3 className="font-bold text-sm text-gray-900 dark:text-white">
+            {lang === "en" ? "Video Description" : "ভিডিও বিবরণী"}
+          </h3>
           <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed font-medium">
-            {video.description || "এই ভিডিওটির জন্য কোনো বিশেষ বিবরণ যোগ করা হয়নি।"}
+            {video.description || (lang === "en" ? "No description has been added for this video." : "এই ভিডিওটির জন্য কোনো বিশেষ বিবরণ যোগ করা হয়নি।")}
           </p>
 
           {/* Tags Mapping */}
@@ -504,17 +522,19 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
           <div className="flex items-center justify-between border-b border-gray-50 dark:border-gray-800/60 pb-3">
             <h3 className="font-extrabold text-sm text-gray-900 dark:text-white flex items-center gap-2">
               <MessageSquare size={16} className="text-indigo-500" />
-              মন্তব্যসমূহ ({approvedComments.length})
+              {lang === "en" ? `Comments (${approvedComments.length})` : `মন্তব্যসমূহ (${approvedComments.length})`}
             </h3>
           </div>
 
           {/* New Comment Submission Form */}
           <form onSubmit={handleCommentSubmit} className="space-y-3">
-            <h4 className="text-xs font-bold text-gray-700 dark:text-gray-300">একটি নতুন মন্তব্য লিখুন</h4>
+            <h4 className="text-xs font-bold text-gray-700 dark:text-gray-300">
+              {lang === "en" ? "Write a New Comment" : "একটি নতুন মন্তব্য লিখুন"}
+            </h4>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
               <input
                 type="text"
-                placeholder="আপনার নাম..."
+                placeholder={lang === "en" ? "Your name..." : "আপনার নাম..."}
                 value={commentName}
                 onChange={(e) => setCommentName(e.target.value)}
                 required
@@ -523,7 +543,7 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
               <div className="md:col-span-3 flex gap-2">
                 <input
                   type="text"
-                  placeholder="আপনার মন্তব্যটি এখানে লিখুন..."
+                  placeholder={lang === "en" ? "Write your comment here..." : "আপনার মন্তব্যটি এখানে লিখুন..."}
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                   required
@@ -532,7 +552,7 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
                 <button
                   type="submit"
                   className="bg-indigo-600 hover:bg-indigo-700 text-white p-2.5 rounded-xl transition-all shadow-md shadow-indigo-600/20 flex items-center justify-center shrink-0 cursor-pointer"
-                  title="মন্তব্য পাঠান"
+                  title={lang === "en" ? "Send Comment" : "মন্তব্য পাঠান"}
                 >
                   <Send size={14} />
                 </button>
@@ -542,7 +562,9 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
             {commentSuccess && (
               <div className="bg-emerald-50 dark:bg-emerald-950/20 text-emerald-800 dark:text-emerald-300 p-3 rounded-xl border border-emerald-200 dark:border-emerald-900/50 text-[11px] font-semibold flex items-center gap-2 animate-fade-in">
                 <CheckCircle2 size={14} className="text-emerald-500" />
-                ধন্যবাদ! আপনার মন্তব্যটি অ্যাডমিন অনুমোদনের জন্য অপেক্ষমান রয়েছে।
+                {lang === "en" 
+                  ? "Thank you! Your comment is awaiting admin approval."
+                  : "ধন্যবাদ! আপনার মন্তব্যটি অ্যাডমিন অনুমোদনের জন্য অপেক্ষমান রয়েছে।"}
               </div>
             )}
           </form>
@@ -564,7 +586,7 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
                         {comm.userName}
                       </span>
                       <span className="text-[10px] font-mono text-gray-400">
-                        {new Date(comm.createdAt).toLocaleDateString("bn-BD")}
+                        {new Date(comm.createdAt).toLocaleDateString(lang === "en" ? "en-US" : "bn-BD")}
                       </span>
                     </div>
                     <p className="text-xs text-gray-600 dark:text-gray-300 font-medium">
@@ -575,7 +597,9 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
               ))
             ) : (
               <p className="text-center py-6 text-xs text-gray-400 dark:text-gray-500 font-medium">
-                এখনো কোনো মন্তব্য করা হয়নি। প্রথম মন্তব্যটি আপনার করুন!
+                {lang === "en" 
+                  ? "No comments yet. Be the first to comment!"
+                  : "এখনো কোনো মন্তব্য করা হয়নি। প্রথম মন্তব্যটি আপনার করুন!"}
               </p>
             )}
           </div>
@@ -593,7 +617,7 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
         <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800/80 p-5 rounded-2xl shadow-sm space-y-4">
           <h3 className="font-extrabold text-sm text-gray-900 dark:text-white flex items-center gap-2">
             <Tv size={16} className="text-indigo-500 animate-pulse" />
-            সম্পর্কিত ভিডিও (Related)
+            {lang === "en" ? "Related Videos" : "সম্পর্কিত ভিডিও (Related)"}
           </h3>
 
           <div className="space-y-4">
@@ -619,14 +643,14 @@ export default function VideoDetails({ videos, ads, onRefreshVideos }: VideoDeta
                       <Link to={`/video/${relVid.id}`}>{relVid.title}</Link>
                     </h4>
                     <span className="text-[10px] font-medium text-gray-500 dark:text-gray-400 block truncate">
-                      {relVid.views.toLocaleString()} বার দেখা হয়েছে
+                      {relVid.views.toLocaleString()} {t("views")}
                     </span>
                   </div>
                 </div>
               ))
             ) : (
               <p className="text-center py-4 text-xs text-gray-400 dark:text-gray-500 font-medium">
-                এই ক্যাটাগরিতে অন্য কোনো ভিডিও নেই।
+                {lang === "en" ? "No other videos in this category." : "এই ক্যাটাগরিতে অন্য কোনো ভিডিও নেই।"}
               </p>
             )}
           </div>
