@@ -1,0 +1,499 @@
+{
+  "categories": [
+    {
+      "slug": "movies",
+      "name": "Movies",
+      "icon": "Film",
+      "image": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600"
+    },
+    {
+      "slug": "drama",
+      "name": "Drama",
+      "icon": "Tv",
+      "image": "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=600"
+    },
+    {
+      "slug": "viral-videos",
+      "name": "Viral Videos",
+      "icon": "Flame",
+      "image": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600"
+    },
+    {
+      "slug": "music",
+      "name": "Music",
+      "icon": "Music",
+      "image": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600"
+    },
+    {
+      "slug": "sports",
+      "name": "Sports",
+      "icon": "Trophy",
+      "image": "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=600"
+    },
+    {
+      "slug": "comedy",
+      "name": "Comedy",
+      "icon": "Laugh",
+      "image": "https://images.unsplash.com/photo-1516280440614-37939bbacd6a?w=600"
+    },
+    {
+      "slug": "technology",
+      "name": "Technology",
+      "icon": "Cpu",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600"
+    },
+    {
+      "slug": "education",
+      "name": "Education",
+      "icon": "BookOpen",
+      "image": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600"
+    },
+    {
+      "slug": "news",
+      "name": "News",
+      "icon": "Globe",
+      "image": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600"
+    },
+    {
+      "slug": "animation",
+      "name": "Animation",
+      "icon": "Sparkles",
+      "image": "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600"
+    },
+    {
+      "slug": "short-videos",
+      "name": "Short Videos",
+      "icon": "Clapperboard",
+      "image": "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600"
+    },
+    {
+      "slug": "web-series",
+      "name": "Web Series",
+      "icon": "PlayCircle",
+      "image": "https://images.unsplash.com/photo-1522869635100-9f4c5e86aa37?w=600"
+    },
+    {
+      "name": "Bangla",
+      "slug": "bangla",
+      "icon": "Tv",
+      "image": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600",
+      "subCategories": [
+        {
+          "name": "IPL",
+          "slug": "ipl"
+        },
+        {
+          "name": "BTV",
+          "slug": "btv"
+        },
+        {
+          "name": "NTV",
+          "slug": "ntv"
+        }
+      ]
+    }
+  ],
+  "videos": [
+    {
+      "id": "1",
+      "title": "Sintel - A Cinematic Masterpiece",
+      "description": "Sintel is an independently produced short film by the Blender Foundation. It tells the moving story of Sintel, a lonely girl who searches for her companion baby dragon, Scales.",
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800",
+      "category": "movies",
+      "tags": [
+        "cinema",
+        "fantasy",
+        "cgi",
+        "blender",
+        "emotional"
+      ],
+      "language": "English",
+      "duration": "14:48",
+      "resolution": "1080p",
+      "views": 48293,
+      "featured": true,
+      "trending": true,
+      "status": "publish",
+      "createdAt": "2026-07-10T10:00:00.000Z",
+      "comments": [
+        {
+          "id": "c1",
+          "userName": "Amit Hassan",
+          "text": "The animation is absolutely stunning! Sintel's journey is very emotional.",
+          "approved": true,
+          "createdAt": "2026-07-11T12:00:00.000Z"
+        },
+        {
+          "id": "c2",
+          "userName": "Rina Akter",
+          "text": "Highly recommended cinematic experience. One of the best CGI short films.",
+          "approved": true,
+          "createdAt": "2026-07-12T15:30:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Big Buck Bunny - Funny Forest Comedy",
+      "description": "Big Buck Bunny tells the story of a giant rabbit with a heart of gold. When three bullying rodents attack his forest home and crush a beautiful butterfly, Bunny decides to take a hilarious revenge.",
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800",
+      "category": "comedy",
+      "tags": [
+        "funny",
+        "bunny",
+        "cartoon",
+        "comedy",
+        "classic"
+      ],
+      "language": "English",
+      "duration": "9:56",
+      "resolution": "720p",
+      "views": 85194,
+      "featured": true,
+      "trending": true,
+      "status": "publish",
+      "createdAt": "2026-07-11T11:00:00.000Z",
+      "comments": [
+        {
+          "id": "c3",
+          "userName": "Sajid Khan",
+          "text": "This rabbit is so cool! The traps he makes are pure comedy.",
+          "approved": true,
+          "createdAt": "2026-07-12T09:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Tears of Steel - Sci-Fi VFX Showcase",
+      "description": "Set in a dystopian future Amsterdam, Tears of Steel explores a science fiction scenario where a group of warriors and scientists try to save the world from destructive giant robots.",
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=800",
+      "category": "technology",
+      "tags": [
+        "scifi",
+        "cgi",
+        "robots",
+        "action",
+        "amsterdam"
+      ],
+      "language": "English",
+      "duration": "12:14",
+      "resolution": "1080p",
+      "views": 29402,
+      "featured": false,
+      "trending": true,
+      "status": "publish",
+      "createdAt": "2026-07-12T14:00:00.000Z",
+      "comments": []
+    },
+    {
+      "id": "4",
+      "title": "Epic Sports Highlights - For Bigger Blazes",
+      "description": "An intense action video featuring jaw-dropping fire sports, cycling adventures, and extreme stunts that went viral around the world.",
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=800",
+      "category": "sports",
+      "tags": [
+        "sports",
+        "extreme",
+        "viral",
+        "stunts",
+        "fire"
+      ],
+      "language": "Bengali",
+      "duration": "0:15",
+      "resolution": "720p",
+      "views": 10405,
+      "featured": true,
+      "trending": false,
+      "status": "publish",
+      "createdAt": "2026-07-13T16:00:00.000Z",
+      "comments": []
+    },
+    {
+      "id": "5",
+      "title": "Escape to Nature - Beautiful Scenic Places",
+      "description": "A calming nature exploration documentary that takes you through mountains, lakes, and forests. Perfect for relaxation and mindfulness.",
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800",
+      "category": "web-series",
+      "tags": [
+        "nature",
+        "travel",
+        "scenic",
+        "relax",
+        "mountains"
+      ],
+      "language": "English",
+      "duration": "0:15",
+      "resolution": "1080p",
+      "views": 6738,
+      "featured": false,
+      "trending": false,
+      "status": "publish",
+      "createdAt": "2026-07-14T08:00:00.000Z",
+      "comments": []
+    },
+    {
+      "id": "6",
+      "title": "Electronic Beat - Dynamic Music Video",
+      "description": "A energetic musical and visual compilation with abstract animations synched to heavy beats. Truly immersive sensory experience.",
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800",
+      "category": "music",
+      "tags": [
+        "music",
+        "electronic",
+        "beats",
+        "rhythm",
+        "colors"
+      ],
+      "language": "English",
+      "duration": "0:15",
+      "resolution": "1080p",
+      "views": 15933,
+      "featured": true,
+      "trending": false,
+      "status": "publish",
+      "createdAt": "2026-07-15T18:30:00.000Z",
+      "comments": []
+    },
+    {
+      "id": "7",
+      "title": "Learning Technology in 2026",
+      "description": "An educational guide explaining the rise of Web 3, AI models, local servers, and full-stack ecosystems. Essential tutorial for students.",
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+      "thumbnailUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800",
+      "category": "education",
+      "tags": [
+        "technology",
+        "education",
+        "tutorial",
+        "guide",
+        "coding"
+      ],
+      "language": "Bengali",
+      "duration": "0:47",
+      "resolution": "1080p",
+      "views": 3810,
+      "featured": false,
+      "trending": false,
+      "status": "publish",
+      "createdAt": "2026-07-16T10:00:00.000Z",
+      "comments": []
+    },
+    {
+      "id": "v_1784467030413",
+      "title": "a",
+      "description": "a",
+      "videoUrl": "/uploads/1784467005375__________________________________________________________1_.mp4",
+      "thumbnailUrl": "/uploads/1784467017395_thumb_1784467016479.jpg",
+      "category": "bangla",
+      "subCategory": "btv",
+      "tags": [],
+      "language": "Bengali",
+      "duration": "00:15",
+      "resolution": "1080p",
+      "featured": false,
+      "trending": false,
+      "isPremium": false,
+      "isLocked": false,
+      "status": "publish",
+      "views": 4,
+      "createdAt": "2026-07-19T13:17:10.413Z",
+      "comments": []
+    }
+  ],
+  "ads": [
+    {
+      "id": "1",
+      "name": "Header Banner Ads",
+      "type": "Banner Ads",
+      "placement": "header",
+      "code": "<div class='bg-amber-100 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 p-4 rounded-lg text-center border border-amber-200 dark:border-amber-900 font-medium text-sm flex items-center justify-between shadow-sm'><div class='flex items-center gap-2'><span>📣</span> <strong>স্পেশাল অফার:</strong> এই সপ্তাহের সেরা ডিলগুলো পেতে এখানে ক্লিক করুন!</div><a href='/offers' class='bg-amber-600 hover:bg-amber-700 text-white text-xs px-3 py-1.5 rounded-md font-semibold transition-colors'>অফার দেখুন</a></div>",
+      "enabled": true,
+      "devices": "both",
+      "startDate": "2026-07-01",
+      "endDate": "2026-08-31"
+    },
+    {
+      "id": "2",
+      "name": "Sidebar Advertisement Banner",
+      "type": "Sidebar Banner",
+      "placement": "sidebar",
+      "code": "<div class='bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/20 dark:to-purple-950/20 text-indigo-950 dark:text-indigo-200 p-5 rounded-xl border border-indigo-100 dark:border-indigo-900/50 shadow-sm'><div class='text-xs uppercase tracking-wider font-bold text-indigo-600 dark:text-indigo-400 mb-2'>SPONSORED</div><h4 class='font-bold text-sm mb-1'>ভিডিও এডিটিং কোর্স ২০২৬</h4><p class='text-xs text-gray-600 dark:text-gray-400 mb-4'>পেশাদারদের কাছ থেকে শিখুন মোবাইল ও পিসি দিয়ে ভিডিও এডিটিং।</p><a href='#' class='block text-center bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2 px-3 rounded-lg transition-colors shadow-sm'>কোর্সে ভর্তি হোন</a></div>",
+      "enabled": true,
+      "devices": "both",
+      "startDate": "2026-07-01",
+      "endDate": "2026-08-31"
+    },
+    {
+      "id": "3",
+      "name": "Sticky Footer Banner",
+      "type": "Sticky Banner",
+      "placement": "sticky",
+      "code": "<div class='flex items-center justify-between gap-4 w-full'><div class='flex items-center gap-3'><span class='flex h-3 w-3 relative'><span class='animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75'></span><span class='relative inline-flex rounded-full h-3 w-3 bg-red-500'></span></span><span class='text-sm font-medium text-gray-700 dark:text-gray-300'>লাইভ আইপিএল ২০২৬ ম্যাচ আজ সন্ধ্যা ৭টায়! সম্পূর্ণ ফ্রিতে উপভোগ করুন।</span></div><a href='#' class='bg-rose-600 hover:bg-rose-700 text-white text-xs px-4 py-2 rounded-lg font-bold transition-all shadow-sm'>লাইভ দেখুন</a></div>",
+      "enabled": true,
+      "devices": "both",
+      "startDate": "2026-07-15",
+      "endDate": "2026-07-25"
+    }
+  ],
+  "settings": {
+    "websiteName": "স্ট্রীমপ্লেক্স (StreamPlex)",
+    "logo": "StreamPlex",
+    "favicon": "🎥",
+    "themeColor": "indigo",
+    "contactEmail": "support@streamplex.com",
+    "socialLinks": {
+      "facebook": "https://facebook.com/streamplex",
+      "youtube": "https://youtube.com/streamplex",
+      "twitter": "https://twitter.com/streamplex"
+    },
+    "smtpConfig": {
+      "host": "smtp.mailtrap.io",
+      "port": "2525",
+      "user": "smtp_user_123",
+      "pass": "•••••••••••••"
+    },
+    "seoSettings": {
+      "metaTitle": "স্ট্রীমপ্লেক্স - সম্পূর্ণ ফ্রি ভিডিও স্ট্রিমিং ওয়েবসাইট",
+      "metaDescription": "মুভি, নাটক, ভাইরাল ভিডিও, কমেডি ও এডুকেশনাল ভিডিওর সেরা সংগ্রহশালা। সম্পূর্ণ ফ্রি ও বাফারিং ছাড়া স্ট্রিমিং করুন।",
+      "metaKeywords": "video streaming, bangla natok, free movies, viral video, sports clip"
+    },
+    "analyticsConfig": {
+      "googleAnalytics": "G-XXXXXXXXXX",
+      "googleSearchConsole": "gsc-verification-code"
+    },
+    "liveStreamPremiumOnly": false,
+    "liveStreamServers": [
+      {
+        "id": "srv_1",
+        "name": "সার্ভার ১ (YouTube Live)",
+        "embedCode": "<iframe src=\"https://www.youtube.com/embed/live_stream?channel=UCGF8Yn2LpvsffuEOn69e3Yg\" width=\"100%\" height=\"100%\" frameborder=\"0\" allowfullscreen></iframe>"
+      },
+      {
+        "id": "srv_2",
+        "name": "সার্ভার ২ (T Sports Direct)",
+        "embedCode": "<iframe src=\"https://www.youtube.com/embed/S_8q0gV_W-E\" width=\"100%\" height=\"100%\" frameborder=\"0\" allowfullscreen></iframe>"
+      }
+    ],
+    "liveStreamIframe": "<iframe src=\"https://www.youtube.com/embed/live_stream?channel=UCGF8Yn2LpvsffuEOn69e3Yg\" width=\"100%\" height=\"100%\" frameborder=\"0\" allowfullscreen></iframe>",
+    "liveStreamEnabled": true,
+    "bottomBannerEnabled": true,
+    "bottomBannerText": "লাইভ আইপিএল ২০২৬ ম্যাচ আজ সন্ধ্যা ৭টায়! সম্পূর্ণ ফ্রিতে উপভোগ করুন।",
+    "bottomBannerBtnText": "লাইভ দেখুন",
+    "bottomBannerLink": "/live",
+    "paymentBkashNumber": "01777-112233",
+    "paymentBkashType": "Personal",
+    "paymentBkashLogo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Bkash_logo_without_text.svg/512px-Bkash_logo_without_text.svg.png",
+    "paymentNagadNumber": "01999-445566",
+    "paymentNagadType": "Personal",
+    "paymentNagadLogo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Nagad_logo.svg/512px-Nagad_logo.svg.png",
+    "paymentRocketNumber": "01888-778899",
+    "paymentRocketType": "Personal",
+    "paymentRocketLogo": "https://upload.wikimedia.org/wikipedia/commons/e/ea/DBBL_Rocket_Logo.svg",
+    "loginPageTitle": "স্ট্রীমপ্লেক্স একাউন লগইন",
+    "loginPageSubtitle": "আপনার প্রিয় লাইভ স্পোর্টস, নাটক ও বিনোদন উপভোগ করতে লগইন করুন।",
+    "registerPageTitle": "নতুন একাউন্ট তৈরি করুন",
+    "registerPageSubtitle": "একাউন্ট তৈরি করে আনলক করুন হাজারো প্রিমিয়াম ভিডিও কনটেন্ট।"
+  },
+  "users": [
+    {
+      "id": "u1",
+      "userName": "Shahriar_28",
+      "email": "shahriar@gmail.com",
+      "status": "active",
+      "createdAt": "2026-07-12T05:00:00.000Z"
+    },
+    {
+      "id": "u2",
+      "userName": "SumitSaha",
+      "email": "sumit@gmail.com",
+      "status": "active",
+      "createdAt": "2026-07-14T09:12:00.000Z"
+    },
+    {
+      "id": "u3",
+      "userName": "AbirHasan",
+      "email": "abir@spam.com",
+      "status": "banned",
+      "createdAt": "2026-07-15T11:45:00.000Z"
+    },
+    {
+      "id": "u_1784466481542",
+      "userName": "Shahin Khan",
+      "email": "shahinkhan28uu@gmail.com",
+      "status": "active",
+      "createdAt": "2026-07-19T13:08:01.542Z",
+      "role": "admin",
+      "permissions": [
+        "dashboard",
+        "videos",
+        "categories",
+        "comments",
+        "payments",
+        "ads",
+        "users",
+        "offers",
+        "settings"
+      ]
+    }
+  ],
+  "loginHistory": [
+    {
+      "id": "lh_1784468032567",
+      "username": "admin",
+      "ip": "127.0.0.1",
+      "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+      "time": "2026-07-19T13:33:52.567Z",
+      "status": "success"
+    },
+    {
+      "id": "lh_1784466561590",
+      "username": "admin",
+      "ip": "127.0.0.1",
+      "browser": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+      "time": "2026-07-19T13:09:21.590Z",
+      "status": "success"
+    },
+    {
+      "id": "lh1",
+      "username": "admin",
+      "ip": "127.0.0.1",
+      "browser": "Chrome / Linux",
+      "time": "2026-07-18T23:00:00.000Z",
+      "status": "success"
+    }
+  ],
+  "offers": [
+    {
+      "id": "off_premium_monthly",
+      "title": "মাসিক প্রিমিয়াম পাস (Monthly Premium Pass)",
+      "description": "৩০ দিন মেয়াদে সমস্ত লাইভ স্পোর্টস ও প্রিমিয়াম ভিডিও বিজ্ঞাপনহীন এইচডি কোয়ালিটিতে উপভোগ করুন। বিকাশ, নগদ বা রকেট দিয়ে পেমেন্ট করুন।",
+      "image": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=600",
+      "link": "#",
+      "btnText": "প্রিমিয়াম পাস কিনুন ⚡",
+      "points": "১ মাস মেয়াদ",
+      "price": "৯৯ টাকা",
+      "status": "active",
+      "createdAt": "2026-07-19T13:08:01.542Z"
+    },
+    {
+      "id": "off_premium_yearly",
+      "title": "বার্ষিক প্রিমিয়াম পাস (Yearly Premium Pass)",
+      "description": "১ বছর মেয়াদে সমস্ত লাইভ স্পোর্টস এবং আনলিমিটেড প্রিমিয়াম মুভি ও নাটক কোনো বিজ্ঞাপন ছাড়াই ফুল এইচডি-তে উপভোগ করুন।",
+      "image": "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600",
+      "link": "#",
+      "btnText": "প্রিমিয়াম পাস কিনুন ⚡",
+      "points": "১২ মাস মেয়াদ (ডিসকাউন্ট)",
+      "price": "৩০০ টাকা",
+      "status": "active",
+      "createdAt": "2026-07-19T13:08:01.542Z"
+    }
+  ],
+  "payments": []
+}
